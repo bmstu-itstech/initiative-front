@@ -1,0 +1,14 @@
+@font-face {
+	font-family: "ALS Sector";
+	src: url('../../shared/assets/fonts/ALS_SECTOR-REGULAR.OTF');
+}
+
+@font-face {
+	font-family: "ALS Sector bold";
+	src: url('../../shared/assets/fonts/ALS_SECTOR-BOLD.OTF');
+}
+
+:root{
+	--font-family-main: 'ALS Sector';
+	--font-family-bold: 'ALS Sector bold';
+}

@@ -1,0 +1,9 @@
+export type ButtonType = 'primary' | 'disabled' | 'secondary' | 'tertiary' | 'danger';
+export type AlertType = 'danger' | 'warning' | 'success' | 'info';
+export type InputType = 'default' | 'error' | 'loading' | 'disabled';
+export type CourseSelectorType = 'active' | 'passive' | 'loading';
+export type FilterButtonType = 'active' | 'passive';
+export type FilterButtonClassType = 'user' | 'group' | 'course' | 'none';
+export type DropDownMenuType = 'endpoint' | 'course' | 'group' | 'user';
+export type MenuButtonPositionType = 'top' | 'bottom';
+export type TableCellPositionType = 'left' | 'center' | 'right';

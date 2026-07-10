@@ -1,0 +1,89 @@
+@use './palette.scss' as *;
+
+
+:root {
+  	--color-primary: #{$blue-500};
+  	--color-primary-secondary: #{$blue-300};
+
+  	--color-background: #{$white};
+  	--color-background-secondary: #{$gray-50};
+  	--color-background-tertiary: #{$gray-50};
+  	--color-surface: #{$white};
+
+  	--color-text-primary: #{$gray-900};
+  	--color-text-secondary: #{$gray-500};
+  	--color-text-header: #{$gray-500};
+  	--color-text-inverted: #{$white};
+
+  	--color-border: #{$gray-200};
+  	--color-border-secondary: #{$gray-100};
+
+  	--color-loading: #{$gray-100};
+	--color-spinner: #{$blue-500};
+
+  	--color-danger: #{$red-500};
+  	--color-danger-light: #{$red-100};
+  	--color-danger-medium: #{$red-200};
+  	--color-danger-secondary: #{$red-300};
+  	--color-danger-dark: #{$red-900};
+
+  	--color-warning: #{$orange-500};
+  	--color-warning-light: #{$orange-100};
+  	--color-warning-dark: #{$orange-900};
+
+  	--color-success: #{$green-500};
+  	--color-success-light: #{$green-100};
+  	--color-success-medium: #{$green-200};
+  	--color-success-secondary: #{$green-300};
+
+  	--color-info: #{$blue-600};
+  	--color-info-light: #{$blue-100};
+
+  	--color-indigo: #{$purple-600};
+  	--color-green: #{$green-600};
+  	--color-violet: #{$violet-500};
+  	--color-yellow: #{$yellow-500};
+  	--color-purple: #{$purple-400};
+  	--color-pink: #{$pink-400};
+
+  	--color-label: #{$color-label};
+
+  	--color-badge-primary: #{$blue-500};
+	--color-badge-secondary: #{$blue-100};
+}
+
+[data-theme='dark'] {
+  	--color-primary: #{$blue-900};
+  	--color-primary-secondary: #{$blue-300};
+
+  	--color-background: #{$neutral-950};
+  	--color-background-secondary: #{$gray-900};
+  	--color-background-tertiary: #{$neutral-950};
+  	--color-surface: #{$gray-900};
+
+  	--color-text-primary: #{$white};
+  	--color-text-secondary: #{$gray-400};
+  	--color-text-header: #{$white};
+  	--color-text-inverted: #{$black};
+
+  	--color-border: #{$gray-500};
+  	--color-border-secondary: #{$white};
+
+  	--color-loading: #{$gray-700};
+	--color-spinner: #{$white};
+
+  	--color-danger: #{$red-500};
+  	--color-danger-light: #{$red-900};
+
+  	--color-warning: #{$orange-500};
+  	--color-warning-light: #{$orange-900};
+
+  	--color-success: #{$green-500};
+  	--color-success-light: #{$green-300};
+
+  	--color-info: #{$blue-600};
+  	--color-info-light: #{$blue-900};
+
+	--color-badge-primary: #{$white};
+	--color-badge-secondary: #{$gray-900};
+}
