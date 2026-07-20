@@ -7,3 +7,6 @@ export type FilterButtonClassType = 'user' | 'group' | 'course' | 'none';
 export type DropDownMenuType = 'endpoint' | 'course' | 'group' | 'user';
 export type MenuButtonPositionType = 'top' | 'bottom';
 export type TableCellPositionType = 'left' | 'center' | 'right';
+export type ThemeType = 'light' | 'dark';
+export type SortDirectionType = 'asc'|'desc';
+export type SelectorActionType = 'create'|'delete';

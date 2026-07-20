@@ -1,37 +1,41 @@
 type TableRow = Record<string, unknown>;
-type TableObject = Record<string, TableRow>
+type TableData = TableRow[];
 
 export type ObjectSizeResult = {
-	rows: number,
-	columns: number,
-	columnsName: string[],
-	normData: TableObject
-}
+	rows: number;
+	columns: number;
+	columnsName: string[];
+	normData: TableData;
+};
 
-export function getObjectSize(data: TableObject): ObjectSizeResult{
-	const entries = Object.entries(data)
+export function getObjectSize(data: TableData): ObjectSizeResult {
+	const columnsBuffer = new Set<string>();
 
-	let buffer = new Set<string>();
+	for (const row of data) {
+		for (const column of Object.keys(row)) {
+			columnsBuffer.add(column);
+		}
+	}
 
-    entries.forEach(([, row])=>Object.keys(row).forEach((column)=>buffer.add(column)));
-    let columnsName = Array.from(buffer);
+	const columnsName = Array.from(columnsBuffer);
 
-    let normData:TableObject = {};
-    entries.forEach(([rowName, row])=>{
-        normData[rowName] = {};
+	const normData = data.map((row) => {
 		const normalizedRow: TableRow = {};
-        columnsName.forEach((column)=>
-            normalizedRow[column] = (Object.prototype.hasOwnProperty.call(row, column))
-                ? row[column]
-                : null
-		)
-		normData[rowName] = normalizedRow;
+
+		for (const column of columnsName) {
+			normalizedRow[column] =
+				Object.prototype.hasOwnProperty.call(row, column)
+					? row[column]
+					: null;
+		}
+
+		return normalizedRow;
 	});
 
 	return {
-	    rows: entries.length,
-	    columns: columnsName.length,
-	    columnsName,
-	    normData
-	}
+		rows: data.length,
+		columns: columnsName.length,
+		columnsName,
+		normData
+	};
 }

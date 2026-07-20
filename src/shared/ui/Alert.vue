@@ -56,7 +56,7 @@ const secondButtonText = computed(() => props.buttons?.[1]);
 				@click="emit('buttonCross')"
 			>
 		</div>
-		<div v-if="props.buttons" class="alert__buttons">
+		<div v-if="props.buttons.length>0" class="alert__buttons">
 			<Button 
 				v-if="firstButtonText" 
 				:text="firstButtonText"

@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 import { PEOPLE_TABLE_MOCK } from '@/entities/UsersTable/mock';
 
-import type { PeopleTableData } from '@/entities/UsersTable/type';
+import type { PeopleTableData, PeopleTableRow } from '@/entities/UsersTable/type';
 import { TABLE_BUTTONS_CONFIG, TABLE_POSITION_CONFIG, TABLE_PROPOPTIONS_CONFIG } from '@/shared/config/table';
 import type { ObjectSizeResult } from '@/shared/lib/table';
 
@@ -27,9 +29,10 @@ const props = withDefaults(
 
 const emit = defineEmits<{
 	'clicked': [id: number];
+	'sort': [columnName: keyof PeopleTableRow];
 }>();
 
-const data: ObjectSizeResult = getObjectSize(props.rawData);
+const data = computed<ObjectSizeResult>(()=>getObjectSize(props.rawData));
 const style: string = "grid-template-columns: " + props.proporions + ";";
 
 </script>
@@ -38,12 +41,14 @@ const style: string = "grid-template-columns: " + props.proporions + ";";
 	<div class="table">
 		<div class="table__header" :style="style">
 			<TableCell 
+				class="table__header__cell"
 				v-for="cell in data.columnsName"
 				:id="-1"
 				:text="cell" 
 				position="center"
 				:isHeader="true"
-				:isButton="false"
+				:isButton="true"
+				@clicked="emit('sort', cell as keyof PeopleTableRow)"
 			/>
 		</div>
 		<div class="table__content">
@@ -55,7 +60,7 @@ const style: string = "grid-template-columns: " + props.proporions + ";";
 					:position="positions[i-1]"
 					:isHeader="false"
 					:isButton="isButtons[i-1]"
-					@clicked="emit('clicked', Number(id))"
+					@clicked="emit('clicked', Number(Object.values(row)[0]))"
 				/>
 			</div>
 		</div>
@@ -74,6 +79,10 @@ const style: string = "grid-template-columns: " + props.proporions + ";";
 
 		&__header, &__content__row{
 			display: grid;
+		}
+
+		&__header__cell{
+			cursor: pointer;
 		}
 	}
 </style>

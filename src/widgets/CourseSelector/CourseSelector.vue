@@ -2,34 +2,81 @@
 import Input from '@/shared/ui/Input.vue';
 import Button from '@/shared/ui/Button.vue';
 
-import type { CourseSelectorType, InputType } from '@/shared/types/types';
+import type { CourseSelectorType } from '@/shared/types/types';
 
-import type { CourseSelectorInterface } from '@/shared/types/interfaces';
-
-import { ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import { COURSE_SELECTOR_CONFIG } from '@/shared/config/courseSelector';
+import type { StructureTreeNodeInterface } from '@/entities/StructureTree/type';
+import { getSelectorCourseGroups, getSelectorCourses, getSelectorIDs, Structure2Selector } from './lib';
+import type { MembershipType } from '@/entities/UserProfile/type';
 
 const props = withDefaults(
 	defineProps<{
+		data: MembershipType
 		state?: CourseSelectorType,
 		error?: boolean[],
-		course?: string,
-		group?: string,
-		id: number
+		structure: StructureTreeNodeInterface[],
 	}>(), {
 		state: 'active',
 		error: ()=>[false, false],
-		course: 'Направление',
-		group: 'Отдел'
 	}
 );
 
 const emit = defineEmits<{
-	clicked: [CourseSelectorInterface]
+	clicked: [value: MembershipType],
+	'update:data': [value: MembershipType]
 }>();
 
-const course = ref(props.state != 'passive' ? '' : props.course);
-const group = ref(props.state != 'passive' ? '' : props.group);
+const course = computed<string>({
+	get: () => props.data.course,
+	set: value => { 
+		emit('update:data', {
+			...props.data,
+			course: value,
+
+			courseId: -1,
+			group: '',
+			groupId: -1
+		});
+	}
+});
+const group = computed<string>({
+	get: () => props.data.group,
+	set: value => {
+		const ids = getSelectorIDs(tree.value, props.data.course, value);
+		emit('update:data', {
+			...props.data,
+			group: value,
+			groupId: ids?.groupId ?? -1,
+			courseId: ids?.courseId ?? -1
+		});
+	}
+});
+
+const tree = computed(()=>Structure2Selector(props.structure));
+const resetCourses: string[][] = [getSelectorCourses(tree.value)];
+const resetGroups = computed<string[][]>(()=>[getSelectorCourseGroups(tree.value, course.value)]);
+
+const courseVars = ref<string[][]>([]);
+const groupVars = ref<string[][]>([]);
+
+
+function showCourses(){ courseVars.value = resetCourses; }
+function showGroups(){ groupVars.value = resetGroups.value; }
+
+function hideCourses(){ courseVars.value = []; }
+function hideGroups(){ groupVars.value = []; } 
+
+function handler(){
+	const ids = getSelectorIDs(tree.value, course.value, group.value);
+	emit('clicked', {
+		...props.data,
+		course: course.value,
+		courseId: ids?.courseId ?? -1,
+		group: group.value,
+		groupId: ids?.groupId ?? -1
+	})
+}
 
 </script>
 
@@ -41,6 +88,17 @@ const group = ref(props.state != 'passive' ? '' : props.group);
 			placeholder="Направление"
 			:state="props.error[0] ? 'error' : COURSE_SELECTOR_CONFIG[props.state].state"
 			:isPassword="false"
+
+			:readonly="true"
+			:erased="true"
+			:variants="courseVars"
+			:hintHeader="['Направления']"
+			:hintGrid="[[1]]"
+
+			@update:model-value="(value)=>{if(value==='')course='';}"
+			@clicked="course = $event"
+			@focused="showCourses"
+			@unfocused="hideCourses"
 		/>
 		<div class="selector__devider">
 			<svg class="selector__devider__icon"
@@ -61,14 +119,21 @@ const group = ref(props.state != 'passive' ? '' : props.group);
 			placeholder="Отдел"
 			:state="props.error[1] ? 'error' : COURSE_SELECTOR_CONFIG[props.state].state"
 			:isPassword="false"
+
+			:readonly="true"
+			:erased="true"
+			:variants="groupVars"
+			:hintHeader="['Отделы']"
+			:hintGrid="[[1]]"
+
+			@update:model-value="(value)=>{if(value==='')group='';}"
+			@clicked="group = $event"
+			@focused="showGroups"
+			@unfocused="hideGroups"
 		/>
 		<Button 
-			@clicked="emit('clicked', {
-				status: props.state == 'passive' ? 'delete' : 'create',
-				course: course,
-				group: group,
-				id: props.id
-			})"
+			@clicked="handler"
+			v-if="props.state=='active'"
 			class="selector__button"
 			:text="COURSE_SELECTOR_CONFIG[props.state].buttonText"
 			:state="COURSE_SELECTOR_CONFIG[props.state].buttonState"
@@ -77,8 +142,6 @@ const group = ref(props.state != 'passive' ? '' : props.group);
 </template>
 
 <style scoped lang="scss">
-	@use '../app//styles/palette.scss' as *;
-
 	.selector{
 		width: fit-content;
 		height: fit-content;
@@ -132,15 +195,19 @@ const group = ref(props.state != 'passive' ? '' : props.group);
 		.selector__input2{
 			--input-color-disabled: var(--color-text-primary);
 			--input-bgcolor-disabled: var(--color-background);
+			--input-radius: 0 14px 14px 0;
 		}
 	}
 
 	.selector--loading{
 		.selector__button{
-			background-color: $color-label;
-			color: $color-background;
-			box-shadow: 0 6px 12px 0 rgba($color-label, 0.35);
+			background-color: var(--color-label);
+			color: white;
+			box-shadow: 0 6px 12px 0 rgba(var(--color-label), 0.35);
 			cursor: default;
+		}
+		.selector__input2{
+			--input-radius: 0 14px 14px 0;
 		}
 	}
 </style>

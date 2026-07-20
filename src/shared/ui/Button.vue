@@ -102,6 +102,7 @@ function handleClick() {
 		background-color: $color-label;
 		color: $color-background;
 		box-shadow: 0 6px 12px 0 rgba($color-label, 0.35);
+		cursor: default;
 	}
 
 	.button--secondary {

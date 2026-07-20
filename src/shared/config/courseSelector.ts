@@ -3,13 +3,13 @@ import type { ButtonType, CourseSelectorType, InputType } from "../types/types";
 export const COURSE_SELECTOR_CONFIG = {
 	'active': {
 		state: 'default',
-		buttonText: 'Нанять',
+		buttonText: 'Уволить',
 		buttonState: 'tertiary'
 	},
 	'passive': {
 		state: 'disabled',
 		buttonText: 'Уволить',
-		buttonState: 'tertiary'
+		buttonState: 'disabled'
 	},
 	'loading': {
 		state: 'loading',

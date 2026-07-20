@@ -9,6 +9,8 @@
 	border: none;
 }
 
-html{
+html, #app, body{
 	background-color: var(--color-background);
+	width: 100%;
+	height: 100%;
 }

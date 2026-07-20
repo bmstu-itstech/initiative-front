@@ -7,4 +7,8 @@ export type PeopleTableRow = {
 	'Дата вступления': string,
 	'Личная страница': string,
 };
-export type PeopleTableData = Record<string, PeopleTableRow>;
+export type PeopleTableData = PeopleTableRow[];
+
+export type DateColumn =
+	| 'Дата рождения'
+	| 'Дата вступления';

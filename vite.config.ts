@@ -19,6 +19,16 @@ export default defineConfig({
 	},
 	server: {
 		host: '0.0.0.0',
+		proxy: {
+			'/api': {
+				target: 'https://initiative.itsbmstu.ru',
+				changeOrigin: true,
+			},
+			'/health': {
+				target: 'https://initiative.itsbmstu.ru',
+				changeOrigin: true,
+			},
+		},
 	  	watch: {
 	    	usePolling: true,
 	    	interval: 100,

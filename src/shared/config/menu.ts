@@ -15,6 +15,7 @@ export type MenuButtonType = {
 
 	icon: string,
 	text: string,
+	link: string | null
 };
 
 export const MENU_CONFIG: MenuButtonType[] = [
@@ -26,7 +27,8 @@ export const MENU_CONFIG: MenuButtonType[] = [
 		position: 'top',
 
 		icon: StructureIcon,
-		text: 'Структура'
+		text: 'Структура',
+		link: 'structure'
 	},
 	{
 		id: 1,
@@ -36,7 +38,8 @@ export const MENU_CONFIG: MenuButtonType[] = [
 		position: 'top',
 
 		icon: PeopleIcon,
-		text: 'Активисты'
+		text: 'Активисты',
+		link: 'people'
 	},
 	{
 		id: 2,
@@ -46,7 +49,8 @@ export const MENU_CONFIG: MenuButtonType[] = [
 		position: 'bottom',
 
 		icon: SunIcon,
-		text: 'Сменить цветовую тему'
+		text: 'Сменить цветовую тему',
+		link: null
 	},
 	{
 		id: 3,
@@ -56,6 +60,7 @@ export const MENU_CONFIG: MenuButtonType[] = [
 		position: 'bottom',
 
 		icon: DoorIcon,
-		text: 'Выйти из аккаунта'
+		text: 'Выйти из аккаунта',
+		link: null
 	},
 ];

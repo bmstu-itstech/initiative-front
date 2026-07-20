@@ -8,16 +8,11 @@ import LoadingIcon from '@/shared/assets/icons/Spinner.svg?component';
 const props = defineProps<{
 		nodes?: number,
 		indets?: string[],
-		rows?: number,
-		columns?: number,
 		text?: string
 	}>();
 
 const nodes = computed(()=>props.nodes ? props.nodes : NUMBER_FAKE_NODES);
 const indets = computed(()=>props.indets ? props.indets : INDENTS_FAKE_NODES);
-
-const rows = computed(()=>props.rows ? props.rows : NUMBER_FAKE_ROWS);
-const columns = computed(()=>props.columns ? props.columns : NUMBER_FAKE_COLUMNS);
 
 const text = computed(()=>props.text ? props.text : "Загрузка");
 

@@ -14,11 +14,13 @@ const props = withDefaults(
 	defineProps<{
 		logo?: Component,
 		header?: string,
-		buttons?: MenuButtonType[]
+		buttons?: MenuButtonType[],
+		activeButton?: number | null
 	}>(), {
 		logo: IllustrationLogo,
 		header: PROJECT_NAME,
-		buttons: ()=>MENU_CONFIG
+		buttons: ()=>MENU_CONFIG,
+		activeButton: null
 	}
 );
 
@@ -27,7 +29,7 @@ const emit = defineEmits<{
 }>();
 
 const isHovered = ref<boolean>(false);
-const activeButtonId = ref<number | null>(null);
+const activeButtonId = ref<number | null>(props.activeButton);
 
 const topButtons = computed(() => {
   	return props.buttons.filter((button) => button.position === 'top')
@@ -148,7 +150,7 @@ function handleButtonClick(id: number) {
 				height: fit-content;
 
 				display: flex;
-				align-items: flex-start;
+				align-items: center;
 				justify-content: center;
 				gap: 14px;
 
