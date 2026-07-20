@@ -23,9 +23,14 @@ export interface Appointment {
 	subtitle: string
 	courseId: number|null,
 	groupId: number|null,
+	memberId?: number
 }
 
 export type getLeadersResponse = LeaderAPI[];
 export type getLeaderResponse = LeaderAPI;
+
 export type createLeaderRequest = AppointmentAPI;
 export type createLeaderResponse = LeaderAPI;
+
+export type updateLeaderRequest = AppointmentAPI;
+export type updateLeaderResponse = LeaderAPI;

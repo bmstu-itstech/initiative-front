@@ -9,7 +9,7 @@ export function userAPI2userTree(user: UserAPI): StructureTreeNodeInterface{
 		id: user.id,
 		type: 'user',
 		
-		title: `${user.first_name} ${user.last_name} ${user.patronymic ?? ''}`,
+		title: `${user.last_name} ${user.first_name} ${user.patronymic ?? ''}`,
 		subtitle: '',
 	
 		children: []
@@ -19,7 +19,7 @@ export function userAPI2userTree(user: UserAPI): StructureTreeNodeInterface{
 export function userAPI2userTable(user: UserAPI): PeopleTableRow{
 	return {
 		'ID': user.id,
-		'ФИО': `${user.first_name} ${user.last_name} ${user.patronymic ?? ''}`,
+		'ФИО': `${user.last_name} ${user.first_name} ${user.patronymic ?? ''}`,
 		'Группа': user.group ?? '-',
 		'Контакт': `@${user.telegram}`,
 		'Дата рождения': user.birth_date ?? '-',

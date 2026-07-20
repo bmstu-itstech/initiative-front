@@ -1,5 +1,7 @@
 import type { InputConfigType, UserProfileInterface } from "@/entities/UserProfile/type";
 import type { InputType } from "@/shared/types/types";
+import type { AlertOptions } from "../alert/type";
+import type { LeaderJournalType } from "./type";
 
 export const USER_PROFILE_INPUT_CONFIG: InputConfigType[] = [
 	{
@@ -63,3 +65,18 @@ export const USER_PLACEHOLDERS: UserProfileInterface = {
 	entryday: "Дата вступления",
 	membership: []
 }
+
+export const DOWNLOAD_ERROR: AlertOptions = {
+	state: 'danger',
+	header: 'Ошибка сети',
+	description: 'Не удалось загрузить членство в организации'
+};
+
+export function createLeaderJournal():LeaderJournalType {
+	return {
+		'create': [],
+		'delete': [],
+		'update': []
+	};
+}
+export const LEADER_ACTIONS = ['delete', 'update', 'create'] as const;

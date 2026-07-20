@@ -15,6 +15,7 @@ export interface UserProfileInterface {
 export type MembershipType = {
 	id: number,
 	isHead: boolean,
+	position?: string,
 	course: string,
 	courseId: number,
 	group: string,
