@@ -32,12 +32,12 @@ export type MonthName = keyof typeof date_mapper;
 
 export interface DateHint {
 	year: string;
-	month: MonthName;
+	month: MonthName|'';
 	day: string;
 }
 
 export const DEFAULT_DATE_HINT: DateHint = {
-	year: '2026',
-	month: 'Январь',
-	day: '1'
+	year: '',
+	month: '',
+	day: ''
 };

@@ -44,6 +44,8 @@ const {
 	createUser,
 	loadStructureTree,
 	loadLeadership,
+	errorInputId,
+	errorSelector
 } = useUser();
 
 watch(
@@ -74,14 +76,34 @@ const form = ref<UserProfileInterface>(structuredClone(USER_PLACEHOLDERS));
 
 const selectorErrors = ref<boolean[][]>([]);
 
-const inputStates = computed<InputType[]>(()=>{
-	return USER_PROFILE_INPUT_CONFIG.map(()=>{
-		if(isLoading.value)
-			return 'loading';
-		return isEditing.value
-			? 'default'
-			: 'disabled';
-	})
+const inputStates = computed<Record<number, InputType>>(() => {
+	const states: Record<number, InputType> = {};
+
+	const inputs = [
+		...USER_PROFILE_INPUT_CONFIG,
+		...USER_PROFILE_DATE_INPUT_CONFIG
+	];
+
+	inputs.forEach((input) => {
+		if (isLoading.value) {
+			states[input.id] = 'loading';
+			return;
+		}
+
+		if (!isEditing.value) {
+			states[input.id] = 'disabled';
+			return;
+		}
+
+		if (errorInputId.value === input.id && errorSelector.value == null) {
+			states[input.id] = 'error';
+			return;
+		}
+
+		states[input.id] = 'default';
+	});
+
+	return states;
 });
 
 function getSelectorState(selector: MembershipType): UserProfileSelectorStateType {
@@ -262,7 +284,7 @@ async function createProfile(): Promise<void> {
 					v-model="form[input.field]"
 					:header="input.header"
 					:placeholder="input.header"
-					:state="inputStates[index]"
+					:state="inputStates[input.id]"
 					:isPassword="false"
 				/>
 				<DateInput 
@@ -271,7 +293,7 @@ async function createProfile(): Promise<void> {
 					v-model="form[input.field]"
 					:header="input.header"
 					:placeholder="input.header"
-					:state="inputStates[index]"
+					:state="inputStates[input.id]"
 					:isPassword="false"
 					
 				/>

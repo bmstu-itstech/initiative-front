@@ -11,12 +11,15 @@ import type { StructureTreeNodeInterface } from "@/entities/StructureTree/type";
 import { getStructureTreeAPI } from "@/entities/StructureTree/api";
 import { LeaderAPI2Membership } from "@/entities/Leader/dto";
 import { getLeadersAPI } from "@/entities/Leader/api";
-import type { LeaderJournalType, MembershipStatusType } from "./type";
+import { GET_USER_ALERT, type LeaderJournalType, type MembershipStatusType } from "./type";
 import { LEADER_API_MAPPER } from "./leaderActions";
+import { userFormValidator } from "./validation";
 
 export function useUser(){
 	const isLoading = ref<boolean>(false);
 	const errorAlert = ref<AlertOptions|null>(null);
+	const errorInputId = ref<number|null>(null);
+	const errorSelector = ref<boolean[]|null>(null);
 	const data = ref<UserProfileInterface>(structuredClone(USER_PLACEHOLDERS));
 	const tree = ref<StructureTreeNodeInterface[]>([]);
 	const LeaderJournal = ref<LeaderJournalType>(createLeaderJournal());
@@ -24,12 +27,17 @@ export function useUser(){
 	async function loadUser(id: number) {
 		isLoading.value = true;
 		errorAlert.value = null;
+		errorInputId.value = null;
+		errorSelector.value = null;
 		LeaderJournal.value = createLeaderJournal();
 
 		try{
 			data.value = userAPI2userProfile(await getUserAPI(id));
 		}catch(currentError){
-			errorAlert.value = ERROR_ALERT['404'] ?? UNKNOWN_ERROR;
+			let alert = null;
+			if(currentError instanceof ApiError)
+				alert = GET_USER_ALERT[currentError.status];
+			errorAlert.value = alert ?? UNKNOWN_ERROR;
 		}finally{
 			isLoading.value = false;
 		}
@@ -40,8 +48,17 @@ export function useUser(){
 	): Promise<void> {
 		isLoading.value = true;
 		errorAlert.value = null;
+		errorInputId.value = null;
+		errorSelector.value = null;
 
 		try {
+			const validationRes = userFormValidator(form);
+			if(validationRes != null){
+				errorAlert.value = validationRes.alert;
+				errorInputId.value = validationRes.inputId;
+				return;
+			}
+
 			const leadership = form.membership.filter(
 				(member) => member.isHead
 			);
@@ -84,6 +101,8 @@ export function useUser(){
 	): Promise<void> {
 		isLoading.value = true;
 		errorAlert.value = null;
+		errorInputId.value = null;
+		errorSelector.value = null;
 
 		try {
 			const leadership = form.membership.filter(
@@ -135,6 +154,8 @@ export function useUser(){
 	async function deleteUser(id: number) {
 		isLoading.value = true;
 		errorAlert.value = null;
+		errorInputId.value = null;
+		errorSelector.value = null;
 
 		try{
 			await deleteUserAPI(id);
@@ -151,6 +172,8 @@ export function useUser(){
 
 		isLoading.value = true;
 		errorAlert.value = null;
+		errorInputId.value = null;
+		errorSelector.value = null;
 		tree.value = [];
 
 		try{
@@ -170,6 +193,8 @@ export function useUser(){
 
 		isLoading.value = true;
 		errorAlert.value = null;
+		errorInputId.value = null;
+		errorSelector.value = null;
 
 		try{
 			const leaders = await getLeadersAPI();
@@ -215,5 +240,7 @@ export function useUser(){
 		createUser,
 		loadStructureTree,
 		loadLeadership,
+		errorInputId,
+		errorSelector
 	}
 }
