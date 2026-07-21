@@ -27,3 +27,17 @@ export const DATE_INPUT_GRID = [
 	DATE_INPUT_GRID_MONTH,
 	DATE_INPUT_GRID_DAY
 ];
+
+export type MonthName = keyof typeof date_mapper;
+
+export interface DateHint {
+	year: string;
+	month: MonthName;
+	day: string;
+}
+
+export const DEFAULT_DATE_HINT: DateHint = {
+	year: '2026',
+	month: 'Январь',
+	day: '1'
+};

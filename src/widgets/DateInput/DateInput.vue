@@ -3,7 +3,7 @@ import type { InputType } from '@/shared/types/types';
 import Input from '@/shared/ui/Input.vue';
 import { computed, onUnmounted, reactive, ref, watch } from 'vue';
 import { DATE_INPUT_GRID, DATE_INPUT_HEADERS_CONFIG, DATE_INPUT_MONTHS_CONFIG, DATE_INPUT_YEARS_CONFIG, date_mapper } from './config';
-import { getArrayDays } from './lib';
+import { date2hint, getArrayDays } from './lib';
 
 
 const props = withDefaults(
@@ -22,6 +22,9 @@ const emit = defineEmits<{
 	'update:modelValue': [value: string]
 }>();
 
+const formDate = reactive(date2hint(props.modelValue));
+watch(()=>props.modelValue, (value)=>Object.assign(formDate, date2hint(value)));
+
 const date = computed(() => {
 	if (!formDate.year || !formDate.month || !formDate.day) {
 		return '-';
@@ -33,12 +36,6 @@ const date = computed(() => {
 	const day = formDate.day.padStart(2, '0');
 
 	return `${formDate.year}-${month}-${day}`;
-});
-
-const formDate = reactive({
-	year: '2026',
-	month: 'Январь',
-	day: '1'
 });
 
 const resetVars = computed<string[][]>(()=>[
@@ -54,6 +51,9 @@ function handler(value: string){
 	const fields = ['year', 'month', 'day'] as const;
 	const field = fields[page.value] ?? 'year';
 	formDate[field] = value;
+
+	if(page.value == vars.value.length - 1)
+		hideVariants();
 }
 
 function showVariants(): void { vars.value = resetVars.value; touched.value = true; }
@@ -85,7 +85,7 @@ function clearDate(): void {
 		:placeholder="props.placeholder"
 		:state="props.state"
 
-		:model-value="touched ? date : modelValue"
+		:model-value="date"
 		:is-password="false"
 		:variants="vars"
 		:hint-header="DATE_INPUT_HEADERS_CONFIG"

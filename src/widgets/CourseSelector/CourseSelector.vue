@@ -29,12 +29,14 @@ const emit = defineEmits<{
 
 const course = computed<string>({
 	get: () => props.data.course,
-	set: value => { 
+	set: value => {
+		const ids = tree.value[value]?.id;
 		emit('update:data', {
 			...props.data,
+			position: ids==undefined ? value : 'Руководитель',
 			course: value,
+			courseId: ids ?? -1,
 
-			courseId: -1,
 			group: '',
 			groupId: -1
 		});
@@ -51,6 +53,19 @@ const group = computed<string>({
 			courseId: ids?.courseId ?? -1
 		});
 	}
+});
+
+const displayedGroup = computed<string>(() => {
+	if (group.value !== '')
+		return group.value;
+
+	if(tree.value[course.value]==undefined && props.data.isHead)
+		return 'Студ.совета';
+
+	if (course.value !== '' && props.data.isHead)
+		return 'Руководитель направления';
+
+	return '';
 });
 
 const tree = computed(()=>Structure2Selector(props.structure));
@@ -89,7 +104,7 @@ function handler(){
 			:state="props.error[0] ? 'error' : COURSE_SELECTOR_CONFIG[props.state].state"
 			:isPassword="false"
 
-			:readonly="true"
+			:readonly="!props.data.isHead"
 			:erased="true"
 			:variants="courseVars"
 			:hintHeader="['Направления']"
@@ -115,7 +130,7 @@ function handler(){
 		</div>
 		<Input 
 			class="selector__input2"
-			v-model="group"
+			v-model="displayedGroup"
 			placeholder="Отдел"
 			:state="props.error[1] ? 'error' : COURSE_SELECTOR_CONFIG[props.state].state"
 			:isPassword="false"

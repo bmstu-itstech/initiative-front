@@ -30,12 +30,16 @@ const leftHeaderClass = ref<boolean>(false);
 const rightHeaderClass = ref<boolean>(false);
 
 function leftSwipe(){
+	if(page.value == 0)
+		return;
 	leftHeaderClass.value = true;
 	setTimeout(()=>page.value--, 125);
 	setTimeout(()=>leftHeaderClass.value=false, 250);
 }
 
 function rightSwipe(){
+	if(page.value == props.data.length - 1)
+		return;
 	rightHeaderClass.value = true;
 	setTimeout(()=>page.value++, 125);
 	setTimeout(()=>rightHeaderClass.value=false, 250);
@@ -50,7 +54,7 @@ const grid = computed<string>(()=>
 
 <template>
 	<div 
-		v-if="props.data.length > 0"
+		v-if="currentData.length > 0"
 		class="input-hint"
 		@mousedown.prevent
 	>
@@ -87,7 +91,7 @@ const grid = computed<string>(()=>
 					v-for="(variant, index) in currentData"
 					:key = "index"
 					class="input-hint__variant"
-					@click="emit('clicked', variant)"
+					@click="rightSwipe(); emit('clicked', variant)"
 				>
 					<span class="input-hint__variant__text">
 						{{ variant }}

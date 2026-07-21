@@ -39,4 +39,5 @@ export function hideAlert(): void {
 
 function reset(): void {
 	Object.assign(alertState, structuredClone(DEFAULT_STATE_ALERT_CONFIG));
+	alertState.onCross = ()=>hideAlert();
 }
