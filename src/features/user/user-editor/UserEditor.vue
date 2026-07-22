@@ -81,6 +81,14 @@ async function createUser(): Promise<void>{
 		name: 'people'
 	});
 }
+async function submit(): Promise<void> {
+	if (mode.value === 'create') {
+		await createUser();
+		return;
+	}
+
+	await saveUser();
+}
 
 </script>
 
@@ -125,6 +133,11 @@ async function createUser(): Promise<void>{
 			@clicked="cancelEditingDraft"
 		/>
 	</template>
+	<Button
+		:text="mode === 'create' ? 'Создать' : 'Сохранить'"
+		:state="isLoading ? 'disabled' : 'primary'"
+		@clicked="submit"
+	/>
 </template>
 
 <style scoped lang="scss">
