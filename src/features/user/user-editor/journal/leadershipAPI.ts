@@ -7,9 +7,12 @@ function leadershipDraft2leadershipAPI(
 	userId: number,
 	leader: LeadershipDraft
 ): AppointmentAPI {
+	let position: string = leader.position;
+	if (leader.courseId == null && leader.groupId == null && leader.course != '')
+		position = leader.course;
 	return {
 		"member_id": userId,
-		"position": leader.position,
+		"position": position,
 		"department_id": leader.groupId,
 		"direction_id": leader.courseId
 	};
