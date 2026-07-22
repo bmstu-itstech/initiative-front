@@ -3,7 +3,7 @@ import type { UserFieldErrorType, UserFieldValidationRuleType } from "./type";
 function createError(
 	header: string,
 	description: string
-): UserFieldErrorType{
+): UserFieldErrorType {
 	return {
 		state: 'danger',
 		header,
@@ -15,7 +15,7 @@ export function required(
 	header: string,
 	description: string
 ): UserFieldValidationRuleType {
-	return (value)=>value.trim() ? null : createError(header, description);
+	return (value) => value.trim() ? null : createError(header, description);
 }
 
 export function maxLength(
@@ -23,7 +23,7 @@ export function maxLength(
 	header: string,
 	description: string
 ): UserFieldValidationRuleType {
-	return (value)=>value.length<=max ? null : createError(header, description);
+	return (value) => value.length <= max ? null : createError(header, description);
 }
 
 export function pattern(
@@ -31,7 +31,11 @@ export function pattern(
 	header: string,
 	description: string
 ): UserFieldValidationRuleType {
-	return (value)=>regex.test(value) ? null : createError(header, description);
+	return (value) => {
+		if (!value.trim())
+			return null;
+		return regex.test(value) ? null : createError(header, description);
+	}
 }
 
 export function isoDate(

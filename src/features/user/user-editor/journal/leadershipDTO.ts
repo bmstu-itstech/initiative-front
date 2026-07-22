@@ -24,27 +24,27 @@ export function getLeadershipChanges(
 	current: LeadershipDraft[]
 ): LeadershipChanges {
 	const original_mapper = new Map<number, LeadershipDraft>(
-		original.filter((item)=>item.appointmentId != null)
-			.map((item)=>[item.appointmentId as number, item])
+		original.filter((item) => item.appointmentId != null)
+			.map((item) => [item.appointmentId as number, item])
 	);
 	const current_mapper = new Map<number, LeadershipDraft>(
-		current.filter((item)=>item.appointmentId!=null)
-			.map((item)=>[item.appointmentId as number, item])
+		current.filter((item) => item.appointmentId != null)
+			.map((item) => [item.appointmentId as number, item])
 	);
 
-	const create = original.filter((item)=>item.appointmentId==null);
-	const update = current.filter((item)=>{
-		if(item.appointmentId==null)
+	const create = current.filter((item) => item.appointmentId == null);
+	const update = current.filter((item) => {
+		if (item.appointmentId == null)
 			return false;
 		const match = original_mapper.get(item.appointmentId);
-		if(match == undefined)
+		if (match == undefined)
 			return false;
 
 		return !isLeadershipEqual(item, match);
 	});
 	const deleteIds = original
-		.filter(item=>item.appointmentId!=null && !current_mapper.has(item.appointmentId))
-		.map(item=>item.appointmentId as number);
+		.filter(item => item.appointmentId != null && !current_mapper.has(item.appointmentId))
+		.map(item => item.appointmentId as number);
 
-	return {create, update, delete: deleteIds};
+	return { create, update, delete: deleteIds };
 }

@@ -4,30 +4,32 @@ import type { UserFieldsDraft } from '../type';
 import { USER_FIELD_SCHEMA, type UserFieldType } from './config';
 import Input from '@/shared/ui/Input.vue';
 import DateInput from '@/widgets/DateInput/DateInput.vue';
+import type { UserFieldErrorMapType } from '../validation/type';
 
 
 const props = defineProps<{
 	modelValue: UserFieldsDraft;
+	errors: UserFieldErrorMapType;
 	isEditing: boolean;
 	isLoading: boolean;
 }>();
 const emit = defineEmits<{
-	'update:modelValue': [value: UserFieldsDraft];
+	'change': [field: UserFieldType, value: string];
 }>();
 
 function updateField(
 	field: UserFieldType,
 	value: string
 ): void {
-	emit('update:modelValue', {
-		...props.modelValue,
-		[field]: value
-	})
+	emit('change', field, value);
 }
 
-function getInputState(): InputType {
+function getInputState(field: UserFieldType): InputType {
 	if (props.isLoading)
 		return 'loading';
+
+	if(props.errors[field])
+		return 'error';
 
 	return props.isEditing
 		? 'default'
@@ -46,7 +48,7 @@ function getInputState(): InputType {
 				:header="field.header"
 				:placeholder="field.placeholder"
 				:is-password="false"
-				:state="getInputState()"
+				:state="getInputState(field.field)"
 				@update:model-value="updateField(field.field, $event)"
 			/>
 			<DateInput 
@@ -56,7 +58,7 @@ function getInputState(): InputType {
 				:header="field.header"
 				:placeholder="field.placeholder"
 				:is-password="false"
-				:state="getInputState()"
+				:state="getInputState(field.field)"
 				@update:model-value="updateField(field.field, $event)"
 			/>
 		</template>

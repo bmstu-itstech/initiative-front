@@ -4,11 +4,14 @@ import type { MembershipDraft } from '../type';
 import { resetMembership } from '../reset';
 import type { CourseSelectorValueType } from '@/widgets/CourseSelector/type';
 import CourseSelector from '@/widgets/CourseSelector/CourseSelector.vue';
+import type { MembershipErrors } from '../validation/membership';
+import Button from '@/shared/ui/Button.vue';
 
 
 const props = defineProps<{
 	modelValue: MembershipDraft[];
 	tree: StructureTreeNodeInterface[];
+	errors: MembershipErrors;
 	isEditing: boolean;
 	isLoading: boolean;
 }>();
@@ -30,7 +33,8 @@ function updateMembership(key: string, value: CourseSelectorValueType): void {
 		if(selector.key != key)
 			return selector;
 		return {...selector, ...value}
-	})
+	});
+	emit('update:modelValue', res);
 }
 function deleteMembership(key: string): void {
 	if (!props.isEditing || props.isLoading)
@@ -42,28 +46,40 @@ function deleteMembership(key: string): void {
 </script>
 
 <template>
-	<div class="membership-section">
+	<section class="membership-section">
 		<h2 class="membership-section__header">
 			Членство в организации
 		</h2>
-	</div>
-	<div class="membership-section__list">
-		<CourseSelector 
-			v-for="selector in props.modelValue"
-			:key="selector.key"
-			variant="membership"
-			:model-value="selector"
-			:structure="props.tree"
-			:state="props.isLoading ? 'loading' : props.isEditing ? 'active' : 'passive'"
-			@update:model-value="value=>updateMembership(selector.key, value)"
-			@delete="deleteMembership(selector.key)"
-		/>
+		<div class="membership-section__list">
+			<CourseSelector
+				v-for="selector in props.modelValue"
+				:key="selector.key"
+				:model-value="selector"
+				variant="membership"
+				:structure="props.tree"
+				:state="
+					props.isLoading
+						? 'loading'
+						: props.isEditing
+							? 'active'
+							: 'passive'
+				"
+				:error="[Boolean(props.errors[selector.key]?.course), Boolean(props.errors[selector.key]?.group)]"
+				@update:model-value="value =>updateMembership(selector.key,value)"
+				@delete="deleteMembership(selector.key)"
+			/>
+		</div>
 		<Button
 			text="Назначить"
-			:state="props.isEditing && !props.isLoading ? 'primary' : 'disabled'"
+			:state="
+				props.isEditing &&
+				!props.isLoading
+					? 'primary'
+					: 'disabled'
+			"
 			@clicked="addMembership"
 		/>
-	</div>
+	</section>
 </template>
 
 <style scoped lang="scss">

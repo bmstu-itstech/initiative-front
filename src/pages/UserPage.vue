@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserEditor from '@/features/user/user-editor/UserEditor.vue';
 import UserFeature from '@/features/user/UserFeature.vue';
 
 const props = defineProps<{
@@ -9,7 +10,7 @@ const props = defineProps<{
 </script>
 
 <template>
-	<UserFeature 
+	<UserEditor 
 		:id="id"
 		:is-editing="isEditing",
 		:from="from"

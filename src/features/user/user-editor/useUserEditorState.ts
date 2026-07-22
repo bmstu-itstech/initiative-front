@@ -1,16 +1,16 @@
-import { computed, ref } from "vue";
+import { computed, ref, toRaw } from "vue";
 import type { UserEditorDraft, UserEditorMode, UserFieldsDraft } from "./type";
 import { resetUserDraft } from "./reset";
 
-function cloneDraft(draft: UserEditorDraft): UserEditorDraft{
-	return structuredClone(draft);
+function cloneDraft(draft: UserEditorDraft): UserEditorDraft {
+	return structuredClone(toRaw(draft));
 }
 
 export function useUserEditorState() {
 	const mode = ref<UserEditorMode>('read');
-	const original = ref<UserEditorDraft|null>(null);
+	const original = ref<UserEditorDraft | null>(null);
 	const draft = ref<UserEditorDraft>(resetUserDraft());
-	const isEditing = computed<boolean>(()=>mode.value !== 'read');
+	const isEditing = computed<boolean>(() => mode.value !== 'read');
 
 	function loadDraft(loadedDraft: UserEditorDraft): void {
 		original.value = cloneDraft(loadedDraft);
@@ -18,7 +18,7 @@ export function useUserEditorState() {
 		mode.value = 'read';
 	}
 	function startEditingDraft(): void {
-		if(!original.value)
+		if (!original.value)
 			return;
 		mode.value = 'update';
 	}
@@ -28,11 +28,11 @@ export function useUserEditorState() {
 		mode.value = 'create';
 	}
 	function cancelEditingDraft(): void {
-		if(mode.value == 'create'){
+		if (mode.value == 'create') {
 			draft.value = resetUserDraft();
 			return;
 		}
-		if(!original.value)
+		if (!original.value)
 			return;
 		draft.value = cloneDraft(original.value);
 		mode.value = 'read';

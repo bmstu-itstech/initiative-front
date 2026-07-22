@@ -7,10 +7,12 @@ import type { CourseSelectorValueType } from '@/widgets/CourseSelector/type';
 
 import type { LeadershipDraft } from '../type';
 import { resetLeadership } from '../reset';
+import type { LeadershipErrors } from '../validation/leadership';
 
 const props = defineProps<{
 	modelValue: LeadershipDraft[];
 	tree: StructureTreeNodeInterface[];
+	errors: LeadershipErrors;
 	isEditing: boolean;
 	isLoading: boolean;
 }>();
@@ -75,6 +77,7 @@ function deleteLeadership(key: string): void {
 				variant="leadership"
 				:structure="props.tree"
 				:state="props.isLoading ? 'loading' : props.isEditing ? 'active' : 'passive'"
+				:error="[Boolean(props.errors[item.key]?.course), Boolean(props.errors[item.key]?.group)]"
 				@update:model-value="value => updateLeadership(item.key, value)"
 				@delete="deleteLeadership(item.key)"
 			/>
