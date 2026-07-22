@@ -9,3 +9,14 @@ export type SelectorIDs = {
 	courseId: number,
 	groupId: number
 }
+
+export interface CourseSelectorValueType {
+	courseId: number|null;
+	course: string;
+	groupId: number|null;
+	group: string;
+}
+
+export type CourseSelectorVariant =
+	| 'membership'
+	| 'leadership';

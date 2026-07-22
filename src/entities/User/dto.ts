@@ -1,7 +1,7 @@
 import type { StructureTreeNodeInterface } from "../StructureTree/type";
 import type { updateUserRequest, UserAPI } from "./type";
 import type { PeopleTableRow } from "../UsersTable/type";
-import type { UserProfileInterface } from "../UserProfile/type";
+import type { UserProfileInterface, UserProfileSourceInterface } from "../UserProfile/type";
 import { groupAPI2groupProfile, groupProfile2groupAPI } from "../Group/dto";
 
 export function userAPI2userTree(user: UserAPI): StructureTreeNodeInterface{
@@ -57,6 +57,18 @@ export function userProfile2userAPI(user: UserProfileInterface): UserAPI {
 }
 
 export function userProfile2updateUserAPI(user: UserProfileInterface): updateUserRequest {
+	return {
+		"first_name": user.firstName,
+		"last_name": user.secondName,
+		"telegram": user.contact,
+		"patronymic": user.surName == '-' ? null : user.surName,
+		"group": user.group == '-' ? null : user.group,
+		"birth_date": user.birthday == '-' ? null : user.birthday,
+		"department_ids": user.membership.map((member)=>member.groupId)
+	}
+}
+
+export function userProfileSource2updateUserAPI(user: UserProfileSourceInterface): updateUserRequest {
 	return {
 		"first_name": user.firstName,
 		"last_name": user.secondName,

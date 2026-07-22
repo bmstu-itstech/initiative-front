@@ -30,3 +30,12 @@ Promise<StructureTreeNodeInterface[]> {
 
 	return tree;
 }
+
+export async function getBriefStructureTreeAPI(): 
+Promise<StructureTreeNodeInterface[]> {
+	const [courses, groups] = await Promise.all([
+		getCoursesAPI(),
+		getGroupsAPI(),
+	]);
+	return makeTree(courses, groups, []);
+}

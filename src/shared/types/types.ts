@@ -10,3 +10,4 @@ export type TableCellPositionType = 'left' | 'center' | 'right';
 export type ThemeType = 'light' | 'dark';
 export type SortDirectionType = 'asc'|'desc';
 export type SelectorActionType = 'create'|'delete';
+export type InputFieldType = 'date'|'text';

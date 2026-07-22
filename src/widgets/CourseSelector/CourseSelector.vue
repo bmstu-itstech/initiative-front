@@ -4,53 +4,54 @@ import Button from '@/shared/ui/Button.vue';
 
 import type { CourseSelectorType } from '@/shared/types/types';
 
-import { computed, ref, type Ref } from 'vue';
+import { computed, ref } from 'vue';
 import { COURSE_SELECTOR_CONFIG } from '@/shared/config/courseSelector';
 import type { StructureTreeNodeInterface } from '@/entities/StructureTree/type';
 import { getSelectorCourseGroups, getSelectorCourses, getSelectorIDs, Structure2Selector } from './lib';
-import type { MembershipType } from '@/entities/UserProfile/type';
+import type { CourseSelectorValueType, CourseSelectorVariant } from './type';
 
 const props = withDefaults(
 	defineProps<{
-		data: MembershipType
+		modelValue: CourseSelectorValueType,
+		variant: CourseSelectorVariant,
 		state?: CourseSelectorType,
 		error?: boolean[],
 		structure: StructureTreeNodeInterface[],
 	}>(), {
 		state: 'active',
 		error: ()=>[false, false],
+		courseReadonly: false,
+		emptyGroupLabel: ''
 	}
 );
 
 const emit = defineEmits<{
-	clicked: [value: MembershipType],
-	'update:data': [value: MembershipType]
+	delete: [],
+	'update:modelValue': [value: CourseSelectorValueType]
 }>();
 
 const course = computed<string>({
-	get: () => props.data.course,
+	get: () => props.modelValue.course,
 	set: value => {
 		const ids = tree.value[value]?.id;
-		emit('update:data', {
-			...props.data,
-			position: ids==undefined ? value : 'Руководитель',
+		emit('update:modelValue', {
 			course: value,
-			courseId: ids ?? -1,
+			courseId: ids ?? null,
 
 			group: '',
-			groupId: -1
+			groupId: null
 		});
 	}
 });
 const group = computed<string>({
-	get: () => props.data.group,
+	get: () => props.modelValue.group,
 	set: value => {
-		const ids = getSelectorIDs(tree.value, props.data.course, value);
-		emit('update:data', {
-			...props.data,
+		const ids = getSelectorIDs(tree.value, props.modelValue.course, value);
+		emit('update:modelValue', {
+			...props.modelValue,
 			group: value,
-			groupId: ids?.groupId ?? -1,
-			courseId: ids?.courseId ?? -1
+			groupId: ids?.groupId ?? null,
+			courseId: ids?.courseId ?? props.modelValue.courseId
 		});
 	}
 });
@@ -59,13 +60,16 @@ const displayedGroup = computed<string>(() => {
 	if (group.value !== '')
 		return group.value;
 
-	if(tree.value[course.value]==undefined && props.data.isHead)
-		return 'Студ.совета';
+	if (props.variant === 'membership')
+		return '';
 
-	if (course.value !== '' && props.data.isHead)
+	if(course.value === '')
+		return '';
+
+	if(tree.value[props.modelValue.course] != undefined)
 		return 'Руководитель направления';
 
-	return '';
+	return 'Студ.совета';
 });
 
 const tree = computed(()=>Structure2Selector(props.structure));
@@ -82,17 +86,6 @@ function showGroups(){ groupVars.value = resetGroups.value; }
 function hideCourses(){ courseVars.value = []; }
 function hideGroups(){ groupVars.value = []; } 
 
-function handler(){
-	const ids = getSelectorIDs(tree.value, course.value, group.value);
-	emit('clicked', {
-		...props.data,
-		course: course.value,
-		courseId: ids?.courseId ?? -1,
-		group: group.value,
-		groupId: ids?.groupId ?? -1
-	})
-}
-
 </script>
 
 <template>
@@ -104,13 +97,12 @@ function handler(){
 			:state="props.error[0] ? 'error' : COURSE_SELECTOR_CONFIG[props.state].state"
 			:isPassword="false"
 
-			:readonly="!props.data.isHead"
+			:readonly="props.variant === 'membership'"
 			:erased="true"
 			:variants="courseVars"
 			:hintHeader="['Направления']"
 			:hintGrid="[[1]]"
 
-			@update:model-value="(value)=>{if(value==='')course='';}"
 			@clicked="course = $event"
 			@focused="showCourses"
 			@unfocused="hideCourses"
@@ -136,7 +128,7 @@ function handler(){
 			:isPassword="false"
 
 			:readonly="true"
-			:erased="true"
+			:erased="group!=''"
 			:variants="groupVars"
 			:hintHeader="['Отделы']"
 			:hintGrid="[[1]]"
@@ -147,7 +139,7 @@ function handler(){
 			@unfocused="hideGroups"
 		/>
 		<Button 
-			@clicked="handler"
+			@clicked="emit('delete')"
 			v-if="props.state=='active'"
 			class="selector__button"
 			:text="COURSE_SELECTOR_CONFIG[props.state].buttonText"

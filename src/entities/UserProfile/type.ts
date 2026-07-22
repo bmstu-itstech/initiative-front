@@ -37,3 +37,23 @@ export type UserProfileSelectorStateType = {
 	state: CourseSelectorType,
 	error: boolean[]
 }
+
+
+export interface UserMembershipSourceInterface {
+	courseId: number;
+	groupId: number;
+}
+
+export interface UserProfileSourceInterface {
+	id: number;
+
+	firstName: string;
+	secondName: string;
+	surName: string;
+	group: string;
+	contact: string;
+	birthday: string;
+	entryday: string;
+
+	membership: UserMembershipSourceInterface[];
+}
