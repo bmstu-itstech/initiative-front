@@ -2,6 +2,8 @@ import type { AppointmentAPI } from "@/entities/Leader/type";
 import type { LeadershipDraft } from "../type";
 import { createLeaderAPI, deleteLeaderAPI, updateLeaderAPI } from "@/entities/Leader/api";
 import type { LeadershipChanges } from "./leadershipDTO";
+import { ApiLeadershipError } from "../alertsAPI";
+import { ApiError, type OPTION_METHOD } from "@/shared/api/type";
 
 function leadershipDraft2leadershipAPI(
 	userId: number,
@@ -42,23 +44,50 @@ async function updateLeadership(
 	);
 }
 
+async function wrapLeadershipRequest(
+	request: () => Promise<unknown>,
+	method: OPTION_METHOD
+): Promise<void> {
+	try {
+		await request();
+	} catch (currentError) {
+		if (currentError instanceof ApiError) {
+			throw new ApiLeadershipError(
+				currentError.status,
+				method
+			);
+		}
+
+		throw currentError;
+	}
+}
+
 export async function syncLeadership(
 	userId: number,
 	changes: LeadershipChanges
 ): Promise<void> {
 	await Promise.all(
-		changes.delete.map((appointmentId) =>
-			deleteLeaderAPI(appointmentId)
+		changes.delete.map((appointmentId) => 
+			wrapLeadershipRequest(
+				() => deleteLeaderAPI(appointmentId),
+				'DELETE'
+			)
 		)
 	);
 
 	await Promise.all([
-		...changes.update.map((item) =>
-			updateLeadership(userId, item)
+		...changes.update.map((item) => 
+			wrapLeadershipRequest(
+				() => updateLeadership(userId, item),
+				'PUT'
+			)
 		),
 
-		...changes.create.map((item) =>
-			createLeadership(userId, item)
+		...changes.create.map((item) => 
+			wrapLeadershipRequest(
+				() => createLeadership(userId, item),
+				'POST'
+			)
 		)
 	]);
 }

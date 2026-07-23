@@ -11,12 +11,15 @@ import { ERROR_ALERT, UNKNOWN_ERROR } from "@/features/alert/config";
 import type { AlertOptions } from "@/features/alert/type";
 import { getLeadershipChanges } from "./journal/leadershipDTO";
 import { syncLeadership } from "./journal/leadershipAPI";
-import type { UserFieldErrorMapType } from "./validation/type";
+import type { UserFieldErrorMapType, UserFieldErrorType } from "./validation/type";
 import type { UserFieldType } from "./fields/config";
 import { validateField, validateFields } from "./validation/validator";
 import { validateMembership, validateMembershipList, type MembershipErrors } from "./validation/membership";
 import type { LeadershipDraft, MembershipDraft } from "./type";
 import { validateLeadership, validateLeadershipList, type LeadershipErrors } from "./validation/leadership";
+import { ApiLeadershipError, DELETE_USER_ERROR_ALERT, POST_USER_ERROR_ALERT, PUT_USER_ERROR_ALERT } from "./alertsAPI";
+import { ApiError } from "@/shared/api/type";
+import { GET_USER_ALERT } from "../type";
 
 export function useUserEditor() {
 	const state = useUserEditorState();
@@ -52,6 +55,33 @@ export function useUserEditor() {
 		} finally {
 			isLoading.value = false;
 		}
+	}
+	function validate(): boolean {
+		const fieldsValid = validateUserFields();
+		const membershipsValid = validateUserMemberships();
+		const leadershipValid = validateUserLeaderships();
+		if (!fieldsValid || !membershipsValid || !leadershipValid) {
+			const field_error: AlertOptions|null = Object.entries(fieldErrors.value)[0]?.[1] ?? null;
+			const membership_error: AlertOptions[]|null = Object.values(
+				Object.entries(
+					membershipErrors.value
+				)[0]?.[1] ?? []
+			)
+			const leadership_error: AlertOptions[]|null = Object.values(
+				Object.entries(
+					leadershipErrors.value
+				)[0]?.[1] ?? []
+			)
+			const error = field_error 
+				?? membership_error[0]
+				?? membership_error[1]
+				?? leadership_error[0]
+				?? leadership_error[1];
+			if(error)
+				errorAlert.value = error;
+			return false;
+		}
+		return true;
 	}
 
 	function updateField(
@@ -138,6 +168,10 @@ export function useUserEditor() {
 			return true;
 		} catch (currentError) {
 			errorAlert.value = ERROR_ALERT.network ?? UNKNOWN_ERROR;
+			if(currentError instanceof ApiLeadershipError)
+				errorAlert.value = currentError.alert;
+			else if(currentError instanceof ApiError)
+				errorAlert.value = GET_USER_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
 			isLoading.value = false;
@@ -148,12 +182,8 @@ export function useUserEditor() {
 		if (isLoading.value || state.draft.value.userId == null || state.original.value == null)
 			return false;
 
-		const fieldsValid = validateUserFields();
-		const membershipsValid = validateUserMemberships();
-		const leadershipValid = validateUserLeaderships();
-		if (!fieldsValid || !membershipsValid || !leadershipValid) {
+		if(!validate())
 			return false;
-		}
 
 		isLoading.value = true;
 		errorAlert.value = null;
@@ -175,6 +205,10 @@ export function useUserEditor() {
 			return true;
 		} catch (currentError) {
 			errorAlert.value = UNKNOWN_ERROR;
+			if(currentError instanceof ApiLeadershipError)
+				errorAlert.value = currentError.alert;
+			else if(currentError instanceof ApiError)
+				errorAlert.value = PUT_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
 			isLoading.value = false;
@@ -185,10 +219,7 @@ export function useUserEditor() {
 		if (isLoading.value || state.mode.value != 'create')
 			return false;
 
-		const fieldsValid = validateUserFields();
-		const membershipsValid = validateUserMemberships();
-		const leadershipValid = validateUserLeaderships();
-		if (!fieldsValid || !membershipsValid || !leadershipValid)
+		if(!validate())
 			return false;
 
 		isLoading.value = true;
@@ -210,6 +241,10 @@ export function useUserEditor() {
 			return true;
 		} catch (currentError) {
 			errorAlert.value = UNKNOWN_ERROR;
+			if(currentError instanceof ApiLeadershipError)
+				errorAlert.value = currentError.alert;
+			else if(currentError instanceof ApiError)
+				errorAlert.value = POST_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
 			isLoading.value = false;
@@ -231,8 +266,12 @@ export function useUserEditor() {
 			await deleteUserAPI(userId);
 			resetValidation();
 			return true;
-		} catch (error) {
+		} catch (currentError) {
 			errorAlert.value = UNKNOWN_ERROR;
+			if(currentError instanceof ApiLeadershipError)
+				errorAlert.value = currentError.alert;
+			else if(currentError instanceof ApiError)
+				errorAlert.value = DELETE_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
 			isLoading.value = false;
