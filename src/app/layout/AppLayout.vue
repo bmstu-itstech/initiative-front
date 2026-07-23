@@ -43,7 +43,7 @@ import AlertFeature from '@/features/alert/AlertFeature.vue';
 			overflow-x: hidden;
 		}
 	}
-	@media (max-width: 700px) {
+	@media (max-width: 925px) {
 		.app-layout__main{overflow-x: auto;}
 		.app-layout{
 			flex-direction: column;

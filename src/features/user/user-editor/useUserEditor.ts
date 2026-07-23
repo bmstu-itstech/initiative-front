@@ -61,23 +61,23 @@ export function useUserEditor() {
 		const membershipsValid = validateUserMemberships();
 		const leadershipValid = validateUserLeaderships();
 		if (!fieldsValid || !membershipsValid || !leadershipValid) {
-			const field_error: AlertOptions|null = Object.entries(fieldErrors.value)[0]?.[1] ?? null;
-			const membership_error: AlertOptions[]|null = Object.values(
+			const field_error: AlertOptions | null = Object.entries(fieldErrors.value)[0]?.[1] ?? null;
+			const membership_error: AlertOptions[] | null = Object.values(
 				Object.entries(
 					membershipErrors.value
 				)[0]?.[1] ?? []
 			)
-			const leadership_error: AlertOptions[]|null = Object.values(
+			const leadership_error: AlertOptions[] | null = Object.values(
 				Object.entries(
 					leadershipErrors.value
 				)[0]?.[1] ?? []
 			)
-			const error = field_error 
+			const error = field_error
 				?? membership_error[0]
 				?? membership_error[1]
 				?? leadership_error[0]
 				?? leadership_error[1];
-			if(error)
+			if (error)
 				errorAlert.value = error;
 			return false;
 		}
@@ -168,9 +168,9 @@ export function useUserEditor() {
 			return true;
 		} catch (currentError) {
 			errorAlert.value = ERROR_ALERT.network ?? UNKNOWN_ERROR;
-			if(currentError instanceof ApiLeadershipError)
+			if (currentError instanceof ApiLeadershipError)
 				errorAlert.value = currentError.alert;
-			else if(currentError instanceof ApiError)
+			else if (currentError instanceof ApiError)
 				errorAlert.value = GET_USER_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
@@ -182,7 +182,7 @@ export function useUserEditor() {
 		if (isLoading.value || state.draft.value.userId == null || state.original.value == null)
 			return false;
 
-		if(!validate())
+		if (!validate())
 			return false;
 
 		isLoading.value = true;
@@ -205,9 +205,9 @@ export function useUserEditor() {
 			return true;
 		} catch (currentError) {
 			errorAlert.value = UNKNOWN_ERROR;
-			if(currentError instanceof ApiLeadershipError)
+			if (currentError instanceof ApiLeadershipError)
 				errorAlert.value = currentError.alert;
-			else if(currentError instanceof ApiError)
+			else if (currentError instanceof ApiError)
 				errorAlert.value = PUT_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
@@ -219,7 +219,7 @@ export function useUserEditor() {
 		if (isLoading.value || state.mode.value != 'create')
 			return false;
 
-		if(!validate())
+		if (!validate())
 			return false;
 
 		isLoading.value = true;
@@ -241,9 +241,9 @@ export function useUserEditor() {
 			return true;
 		} catch (currentError) {
 			errorAlert.value = UNKNOWN_ERROR;
-			if(currentError instanceof ApiLeadershipError)
+			if (currentError instanceof ApiLeadershipError)
 				errorAlert.value = currentError.alert;
-			else if(currentError instanceof ApiError)
+			else if (currentError instanceof ApiError)
 				errorAlert.value = POST_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
@@ -263,14 +263,25 @@ export function useUserEditor() {
 		errorAlert.value = null;
 
 		try {
+			if (state.original.value == null)
+				return false;
+			const ids: number[] = state.original.value.leaderships
+				.map((leader) => leader.appointmentId)
+				.filter((id) => id != null);
+			await syncLeadership(userId, {
+				create: [],
+				update: [],
+				delete: ids
+			});
+
 			await deleteUserAPI(userId);
 			resetValidation();
 			return true;
 		} catch (currentError) {
 			errorAlert.value = UNKNOWN_ERROR;
-			if(currentError instanceof ApiLeadershipError)
+			if (currentError instanceof ApiLeadershipError)
 				errorAlert.value = currentError.alert;
-			else if(currentError instanceof ApiError)
+			else if (currentError instanceof ApiError)
 				errorAlert.value = DELETE_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {

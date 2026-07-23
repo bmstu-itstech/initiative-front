@@ -31,7 +31,7 @@ const emit = defineEmits<{
 const windowWidth = ref<number>(window.innerWidth);
 
 const isMobile = computed<boolean>(
-	() => windowWidth.value <= 700
+	() => windowWidth.value <= 925
 );
 function updateWindowWidth(): void {
 	windowWidth.value = window.innerWidth;
@@ -207,7 +207,7 @@ function handleButtonClick(id: number) {
 		}
 	}
 
-	@media (max-width: 700px) {
+	@media (max-width: 925px) {
 		.sidebar {
 			width: 100%;
 			height: 90px;
