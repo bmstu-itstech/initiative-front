@@ -472,7 +472,7 @@ function requestUserDeletion(): void {
 		}
 	}
 
-	@media (max-width: 800px) {
+	@media (max-width: 1010px) {
 		.user-page {
 			width: 100%;
 			gap: 24px;

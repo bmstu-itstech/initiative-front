@@ -72,7 +72,7 @@ function getInputState(field: UserFieldType): InputType {
 		gap: 20px;
 	}
 
-	@media (max-width: 800px) {
+	@media (max-width: 1010px) {
 		.user-fields {
 			grid-template-columns: 1fr;
 		}

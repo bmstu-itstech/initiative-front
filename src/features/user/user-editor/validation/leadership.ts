@@ -38,7 +38,7 @@ export function validateLeadership(
 
 	if (
 		item.courseId == null &&
-		(item.group.trim() !== '' ||
+		((item.group.trim() !== '' && item.group.trim() != 'Студ.совета') ||
 			item.groupId !== null)
 	) {
 		errors.group = createError(
