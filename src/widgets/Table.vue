@@ -72,7 +72,6 @@ const style: string = "grid-template-columns: " + props.proporions + ";";
 		border: 1px solid transparent;
 		border-color: var(--color-border);
 		border-radius: 6px;
-		overflow: hidden;
 
 		width: 100%;
 		height: fit-content;

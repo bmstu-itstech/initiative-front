@@ -78,7 +78,9 @@ const secondButtonText = computed(() => props.buttons?.[1]);
 	@use '../../app/styles/palette.scss' as *;
 
 	.alert{
-		width: 475px;
+		min-width: 320px;
+		width: 100%;
+		max-width: 475px;
 		height: fit-content;
 
 		display: flex;

@@ -150,7 +150,7 @@ function eraseInput(){
 
 	.input{
 		width: 100%;
-		min-width: 300px;
+		min-width: var(--input-min-width, 300px);
 		max-width: var(--input-width, 400px);
 		height: fit-content;
 

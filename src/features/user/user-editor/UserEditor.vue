@@ -357,6 +357,8 @@ function requestUserDeletion(): void {
 
 		&__name {
 			width: fit-content;
+			max-width: 100%;
+			min-width: 0;
 			height: fit-content;
 
 			display: flex;
@@ -365,6 +367,10 @@ function requestUserDeletion(): void {
 		}
 
 		&__title {
+			width: 100%;
+			max-width: 100%;
+			min-width: 0;
+
 			display: flex;
 			align-items: baseline;
 			flex-wrap: wrap;
@@ -372,10 +378,20 @@ function requestUserDeletion(): void {
 		}
 
 		&__title-text {
+			display: block;
+			max-width: 100%;
+			min-width: 0;
+			flex: 1 1 auto;
+			min-width: 0;
+
 			color: var(--color-text-primary);
 			font-family: var(--font-family-bold);
 			font-size: 32px;
 			line-height: 1.2;
+
+			white-space: normal;
+			overflow-x: auto;
+			overflow-y: hidden;
 		}
 
 		&__id {

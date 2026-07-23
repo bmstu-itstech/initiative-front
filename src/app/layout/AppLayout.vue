@@ -37,10 +37,17 @@ import AlertFeature from '@/features/alert/AlertFeature.vue';
 			justify-content: flex-start;
 			flex-direction: column;
 			gap: 50px;
-			padding: 60px 60px;
+			padding: clamp(30px, 10vw, 60px) clamp(30px, 10vw, 60px);
 
 			overflow-y: auto;
 			overflow-x: hidden;
+		}
+	}
+	@media (max-width: 700px) {
+		.app-layout__main{overflow-x: auto;}
+		.app-layout{
+			flex-direction: column;
+			justify-content: flex-start;
 		}
 	}
 </style>

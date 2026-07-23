@@ -79,6 +79,7 @@ async function handleButton(): Promise<void>{
 
 <style scoped lang="scss">
 	.sign-in{
+		min-width: 320px;
 		width: 100%;
 		height: fit-content;
 
@@ -90,6 +91,7 @@ async function handleButton(): Promise<void>{
 
 		&__inputs{
 			width: 100%;
+			min-width: 300px;
 			height: fit-content;
 
 			display: flex;

@@ -57,6 +57,7 @@ function handleInput(event: Event) {
 
 	.search-input{
 		width: 100%;
+		min-width: 320px;
 		height: 32px;
 
 		display: flex;
@@ -72,6 +73,7 @@ function handleInput(event: Event) {
 
 			&__field{
 				width: 100%;
+				min-width: 300px;
 				height: 32px;
 
 				padding: 6px 12px;

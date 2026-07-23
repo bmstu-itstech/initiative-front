@@ -46,6 +46,7 @@ const filterValue = ref<FilterDataInterface>({
 			}
 		}
 		&__content{
+			min-width: 450px;
 			width: 100%;
 			height: fit-content;
 			display: flex;
@@ -53,6 +54,11 @@ const filterValue = ref<FilterDataInterface>({
 			justify-content: flex-start;
 			gap: 3px;
 			flex-direction: column;
+		}
+	}
+	@media (max-width: 1000px){
+		.structure-page__header{
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 </style>

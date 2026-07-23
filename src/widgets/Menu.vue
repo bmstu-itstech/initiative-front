@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 import IllustrationLogo from '@/shared/assets/illustrations/illustration-logo.svg?component';
 import { PROJECT_NAME } from '@/shared/constants/config';
@@ -28,6 +28,24 @@ const emit = defineEmits<{
   	clicked: [id: number];
 }>();
 
+const windowWidth = ref<number>(window.innerWidth);
+
+const isMobile = computed<boolean>(
+	() => windowWidth.value <= 700
+);
+function updateWindowWidth(): void {
+	windowWidth.value = window.innerWidth;
+
+	if (isMobile.value)
+		isHovered.value = false;
+}
+onMounted(() => {
+	window.addEventListener('resize', updateWindowWidth);
+});
+onUnmounted(() => {
+	window.removeEventListener('resize', updateWindowWidth);
+});
+
 const isHovered = ref<boolean>(false);
 const activeButtonId = ref<number | null>(props.activeButton);
 
@@ -49,8 +67,8 @@ function handleButtonClick(id: number) {
 <template>
 	<div 
 		class="sidebar" 
-		:class="{'sidebar--hover': isHovered}"
-		@mouseenter="isHovered=true" 
+		:class="{'sidebar--hover': isHovered&&!isMobile}"
+		@mouseenter="isHovered=!isMobile" 
 		@mouseleave="isHovered=false"
 	>
 
@@ -186,6 +204,42 @@ function handleButtonClick(id: number) {
 		.sidebar__menu__top__logo__text{
 			opacity: 1;
 			max-width: 200px;
+		}
+	}
+
+	@media (max-width: 700px) {
+		.sidebar {
+			width: 100%;
+			height: 90px;
+			min-width: 350px;
+
+			padding: 20px;
+
+			border-radius: 0 0 12px 12px;
+
+			&__menu {
+				width: 100%;
+				height: fit-content;
+
+				flex-direction: row;
+				align-items: center;
+
+				&__top,
+				&__bottom {
+					width: fit-content;
+
+					flex-direction: row;
+					align-items: center;
+				}
+
+				&__top__logo__text {
+					display: none;
+				}
+			}
+		}
+
+		.sidebar--hover {
+			width: 100%;
 		}
 	}
 </style>

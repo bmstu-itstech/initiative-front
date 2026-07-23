@@ -78,11 +78,12 @@ function handler():void{
 			align-items: center;
 			gap: 8px;
 
-			padding: 8px 12px;
+			padding: clamp(0px, 1vw, 8px) clamp(0px, 1vw, 12px);
 
 			&__text{
 				color: var(--color-text-primary);
 				font-size: 14px;
+				text-wrap: nowrap;
 
 				transition: color 0.2s ease;
 			}

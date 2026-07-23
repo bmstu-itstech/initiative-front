@@ -59,7 +59,9 @@ import AlertFeature from '@/features/alert/AlertFeature.vue';
 			background-color: var(--color-background);
 
 			&__content{
-				width: 400px;
+				max-width: 400px;
+				width: 100%;
+				min-width: 320px;
 				height: fit-content;
 
 				display: flex;
@@ -79,14 +81,14 @@ import AlertFeature from '@/features/alert/AlertFeature.vue';
 					gap: 30px;
 
 					&__icon{
-						width: 55px;
-						height: 55px;
+						width: clamp(48px, 10vw, 55px);
+						height: clamp(48px, 10vw, 55px);
 						--icon-primary-color: var(--color-text-primary);
 					}
 
 					&__text{
 						font-family: var(--font-family-bold);
-						font-size: 48px;
+						font-size: clamp(36px, 10vw, 48px);
 						color: var(--color-text-primary);
 					}
 				}
@@ -104,6 +106,19 @@ import AlertFeature from '@/features/alert/AlertFeature.vue';
 			background-position: center center;
 			background-repeat: no-repeat;
 			background-size: cover;
+		}
+	}
+
+	@media (max-width: 1000px){
+		.si-page{
+			grid-template-columns: 1fr;
+			&__right{
+				display: none;
+			}
+			&__left{
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
 		}
 	}
 </style>

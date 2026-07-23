@@ -111,11 +111,16 @@ function handler(): void{
 			border-color: var(--color-border-secondary);
 
 			&__header{
+				white-space: nowrap;
+				text-overflow: ellipsis;
 				font-size: 16px;
 				color: var(--color-text-primary);
+				white-space: nowrap;
 			}
 
 			&__footer{
+				white-space: nowrap;
+				text-overflow: ellipsis;
 				font-size: 12px;
 				color: var(--color-label);
 			}

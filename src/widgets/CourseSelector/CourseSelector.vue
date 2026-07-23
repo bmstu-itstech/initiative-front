@@ -150,7 +150,7 @@ function hideGroups(){ groupVars.value = []; }
 
 <style scoped lang="scss">
 	.selector{
-		width: fit-content;
+		width: 100%;
 		height: fit-content;
 
 		display: flex;
@@ -159,13 +159,15 @@ function hideGroups(){ groupVars.value = []; }
 		justify-content: flex-start;
 
 		&__input1{
-			width: 200px;
+			--input-width: 400px;
 			--input-radius: 14px 0 0 14px;
+			--input-min-width: 125px;
 		}
 
 		&__devider{
-			width: 50px;
+			min-width: 50px;
 			height: 50px;
+			flex-shrink: 1;
 
 			display: flex;
 			justify-content: center;
@@ -180,8 +182,9 @@ function hideGroups(){ groupVars.value = []; }
 		}
 
 		&__input2{
-			width: 200px;
+			--input-width: 400px;
 			--input-radius: 0;
+			--input-min-width: 125px;
 		}
 
 		&__button{

@@ -84,6 +84,7 @@ function deleteMembership(key: string): void {
 
 <style scoped lang="scss">
 	.membership-section {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -98,6 +99,7 @@ function deleteMembership(key: string): void {
 		}
 
 		&__list {
+			width: 100%;
 			display: flex;
 			flex-direction: column;
 			gap: 15px;

@@ -46,6 +46,7 @@ function handler(): void{
 <style scoped lang="scss">
 	.cell{
 		width: 100%;
+		min-width: 0;
 		height: 40px;
 
 		display: flex;
@@ -94,6 +95,23 @@ function handler(): void{
 			height: 52px;
 			font-size: 12px;
 			color: var(--color-text-header);
+
+			.cell__text{
+				white-space: normal;
+			}
+		}
+		&__text{
+			display: block;
+
+			width: fit-content;
+			max-width: 100%;
+			min-width: 0;
+
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			text-align: center;
 		}
 	}
 </style>

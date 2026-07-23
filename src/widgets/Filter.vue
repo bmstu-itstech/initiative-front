@@ -62,7 +62,9 @@ function updateSearch(value: string) {
 
 <style scoped lang="scss">
 	.filter{
-		width: fit-content;
+		width: 100%;
+		max-width: fit-content;
+		min-width: 320px;
 		height: fit-content;
 
 		display: flex;
@@ -79,5 +81,8 @@ function updateSearch(value: string) {
 			align-items: center;
 			justify-content: space-between;
 		}
+	}
+	@media (max-width: 520px){
+		.filter__buttons{display: none;}
 	}
 </style>

@@ -55,6 +55,7 @@ const router = useRouter();
 			/>
 		</div>
 		<PeopleTableFeature 
+			clas
 			:filter="filterValue"
 		/>
 	</div>
@@ -66,7 +67,7 @@ const router = useRouter();
 			width: 100%;
 			height: fit-content;
 			display: grid;
-			grid-template-columns: minmax(0, 1fr) max-content;
+			grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
 			gap: 10px;
 			&__text{
 				font-family: var(--font-family-bold);
@@ -74,11 +75,13 @@ const router = useRouter();
 				color: var(--color-text-primary);
 			}
 			&__filter{
-				width: 400px;
+				width: 100%;
+				min-width: 0;
 			}
 		}
 		&__content{
 			width: 100%;
+			min-width: 700px;
 			height: fit-content;
 			display: flex;
 			align-items: flex-start;
@@ -93,6 +96,11 @@ const router = useRouter();
 				justify-content: flex-end;
 				gap: 10px;
 			}
+		}
+	}
+	@media (max-width: 820px){
+		.people-page__header{
+			grid-template-columns: minmax(320px, 400px);
 		}
 	}
 </style>
