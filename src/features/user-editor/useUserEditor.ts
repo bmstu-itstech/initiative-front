@@ -19,7 +19,7 @@ import type { LeadershipDraft, MembershipDraft } from "./type";
 import { validateLeadership, validateLeadershipList, type LeadershipErrors } from "./validation/leadership";
 import { ApiLeadershipError, DELETE_USER_ERROR_ALERT, POST_USER_ERROR_ALERT, PUT_USER_ERROR_ALERT } from "./alertsAPI";
 import { ApiError } from "@/shared/api/type";
-import { GET_USER_ALERT } from "../type";
+import { GET_USER_ERROR_ALERT } from "./alertsAPI";
 
 export function useUserEditor() {
 	const state = useUserEditorState();
@@ -171,7 +171,7 @@ export function useUserEditor() {
 			if (currentError instanceof ApiLeadershipError)
 				errorAlert.value = currentError.alert;
 			else if (currentError instanceof ApiError)
-				errorAlert.value = GET_USER_ALERT[currentError.status] ?? UNKNOWN_ERROR;
+				errorAlert.value = GET_USER_ERROR_ALERT[currentError.status] ?? UNKNOWN_ERROR;
 			return false;
 		} finally {
 			isLoading.value = false;

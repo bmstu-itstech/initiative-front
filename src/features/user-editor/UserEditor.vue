@@ -8,7 +8,7 @@ import UserFieldsForm from './fields/UserFieldsForm.vue';
 import MembershipSection from './memberships/MembershipSection.vue';
 import LeadershipSection from './leaderships/LeadershipSection.vue';
 
-import { useUserEditor } from './useUserEditor';
+import { useUserEditor } from './useUserEditor.ts';
 
 import {
 	hideAlert,
@@ -382,7 +382,6 @@ function requestUserDeletion(): void {
 			max-width: 100%;
 			min-width: 0;
 			flex: 1 1 auto;
-			min-width: 0;
 
 			color: var(--color-text-primary);
 			font-family: var(--font-family-bold);
@@ -402,6 +401,12 @@ function requestUserDeletion(): void {
 		}
 
 		&__group {
+			max-width: 100%;
+			min-width: 0;
+			flex: 1 1 auto;
+			overflow-x: auto;
+			overflow-y: hidden;
+
 			color: var(--color-label);
 			font-family: var(--font-family-bold);
 			font-size: 24px;

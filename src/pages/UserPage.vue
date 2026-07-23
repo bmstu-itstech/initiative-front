@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UserEditor from '@/features/user/user-editor/UserEditor.vue';
-import UserFeature from '@/features/user/UserFeature.vue';
+import UserEditor from '@/features/user-editor/UserEditor.vue';
+
 
 const props = defineProps<{
 	id: number,

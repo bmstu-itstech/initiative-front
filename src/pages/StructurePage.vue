@@ -36,13 +36,18 @@ const filterValue = ref<FilterDataInterface>({
 		&__header{
 			width: 100%;
 			height: fit-content;
-			display: grid;
-			grid-template-columns: minmax(0, 1fr) max-content;
+			display: flex;
+			align-items: flex-start;
+			flex-wrap: wrap;
 			gap: 10px;
 			&__text{
+				flex: 1 1 500px;
 				font-family: var(--font-family-bold);
 				font-size: 32px;
 				color: var(--color-text-primary);
+			}
+			&__field{
+				flex: 0 0 auto;
 			}
 		}
 		&__content{
@@ -54,11 +59,6 @@ const filterValue = ref<FilterDataInterface>({
 			justify-content: flex-start;
 			gap: 3px;
 			flex-direction: column;
-		}
-	}
-	@media (max-width: 1000px){
-		.structure-page__header{
-			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 </style>
