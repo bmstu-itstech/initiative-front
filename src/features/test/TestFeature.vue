@@ -12,6 +12,7 @@ import StructureTree from '@/widgets/StructureTree.vue';
 import Menu from '@/widgets/Menu.vue';
 import Table from '@/widgets/Table.vue';
 import Skeleton from '@/shared/ui/Skeleton.vue';
+import UserIcon from '@/shared/assets/icons/filter/User.svg?component';
 
 import icon from '@/shared/assets/icons/menu/People.svg?url'
 
@@ -21,6 +22,8 @@ import { reactive, ref, watch } from 'vue';
 import DateInput from '@/widgets/DateInput/DateInput.vue';
 import { STRUCTURE_TREE_MOCK } from '@/entities/StructureTree/mock';
 import type { MembershipType } from '@/entities/UserProfile/type';
+import Badge from '@/shared/ui/Badge.vue';
+import IconButton from '@/shared/ui/IconButton.vue';
 
 const flag = ref(false);
 const flag2 = ref(false);
@@ -56,7 +59,7 @@ function http(){
 }
 
 const vars = ref<string[][]>([]);
-const value6 = ref<string>('');
+const value6 = ref<string>('ул.Бауманская д5с3');
 const value7 = ref<string>('');
 const value8 = ref({
 			id: 0,
@@ -66,7 +69,6 @@ const value8 = ref({
 			group: '',
 			groupId: -1
 		});
-
 </script>
 
 <template>
@@ -74,6 +76,12 @@ const value8 = ref({
 	<div class="menu">
 		<Menu style="height: 100vh;" @clicked="(id)=>{if(id==2)toggleTheme()}"/>
 	</div>
+	<Badge 
+		v-model="value6"
+		:icon="UserIcon"
+	/>
+	{{ value6 }}
+	<IconButton />
 	<DateInput 
 		v-model="value7"
 		placeholder="Дата рождения"
@@ -156,13 +164,6 @@ const value8 = ref({
 		@unfocused="vars=[]"
 	/>
 	{{ value6 }}
-	<CourseSelector 
-		v-model:data="value8"
-		state="active"
-		:structure="STRUCTURE_TREE_MOCK[0]?.children ?? []"
-		@clicked="selectorHandler"
-	/>
-	{{ value8 }}
 	<FilterButton/>
 	<SearchInput 
 		v-model="value2" 

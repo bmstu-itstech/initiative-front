@@ -11,3 +11,4 @@ export type ThemeType = 'light' | 'dark';
 export type SortDirectionType = 'asc'|'desc';
 export type SelectorActionType = 'create'|'delete';
 export type InputFieldType = 'date'|'text';
+export type BadgeType = CourseSelectorType;

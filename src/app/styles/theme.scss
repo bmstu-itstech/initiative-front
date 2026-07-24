@@ -50,6 +50,7 @@
 
   	--color-badge-primary: #{$blue-500};
 	--color-badge-secondary: #{$blue-100};
+	--color-badge-border: #{$gray-100};
 }
 
 [data-theme='dark'] {
@@ -86,4 +87,5 @@
 
 	--color-badge-primary: #{$white};
 	--color-badge-secondary: #{$gray-900};
+	--color-badge-border: #{$gray-900};
 }

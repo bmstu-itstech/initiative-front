@@ -186,13 +186,13 @@ function eraseInput(){
 
 			&__field{
 				width: 100%;
-				height: 50px;
+				height: var(--input-height, 50px);
 				min-width: 0;
 
 				outline: none;
 				appearance: none;
 
-				padding: 0 18px;
+				padding: 0 var(--input-padding, 18px);
 
 				white-space: nowrap;
 				overflow-x: auto;
