@@ -2,11 +2,6 @@ import type { RouteRecordRaw } from "vue-router";
 
 export const routes: RouteRecordRaw[] = [
 	{
-		path: '/test',
-		name: 'test',
-		component: ()=>import('@/pages/TestPage.vue')
-	},
-	{
 		path: '/',
 		name: 'home',
 		component: ()=>import('@/app/layout/AppLayout.vue'),
