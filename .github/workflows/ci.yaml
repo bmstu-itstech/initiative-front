@@ -25,5 +25,5 @@ jobs:
               git pull origin main
               docker build -t initiative-front .
               docker create --name initiative-front initiative-front nop
-              docker cp initiative-front:/dist/* ${{ vars.DIST_DIR }}
+              docker cp initiative-front:/dist ${{ vars.DIST_DIR }}
               docker container rm initiative-front
