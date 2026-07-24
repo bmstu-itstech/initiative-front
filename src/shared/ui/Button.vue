@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { ButtonType } from '../types/types';
+import ArrowIcon from '@/shared/assets/icons/Arrow.svg?component';
 
 const props = withDefaults(
 	defineProps<{
@@ -38,13 +39,11 @@ function handleClick() {
 	>
     <span>{{ props.text }}</span>
 
-    <img
+	<component 
 		v-if="props.icon"
+		:is="ArrowIcon"
 		class="button__icon"
-		src="../assets/icons/Arrow.svg"
-		alt=""
-		aria-hidden="true"
-    >
+	/>
   </button>
 </template>
 
