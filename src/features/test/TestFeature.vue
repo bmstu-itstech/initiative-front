@@ -24,6 +24,8 @@ import { STRUCTURE_TREE_MOCK } from '@/entities/StructureTree/mock';
 import type { MembershipType } from '@/entities/UserProfile/type';
 import Badge from '@/shared/ui/Badge.vue';
 import IconButton from '@/shared/ui/IconButton.vue';
+import Event from '@/widgets/Event.vue';
+import { EVENT_BLOCKS_MOCK } from '@/entities/Event/mock';
 
 const flag = ref(false);
 const flag2 = ref(false);
@@ -69,12 +71,21 @@ const value8 = ref({
 			group: '',
 			groupId: -1
 		});
+
+
 </script>
 
 <template>
 <div class="main">
 	<div class="menu">
 		<Menu style="height: 100vh;" @clicked="(id)=>{if(id==2)toggleTheme()}"/>
+	</div>
+	<div class="events" style="display: flex;flex-direction: column;">
+		<Event 
+			v-for="event in EVENT_BLOCKS_MOCK"
+			style="width: 741px;"
+			:data="event"
+		/>
 	</div>
 	<Badge 
 		v-model="value6"
