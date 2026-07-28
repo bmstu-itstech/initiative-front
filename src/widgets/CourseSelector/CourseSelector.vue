@@ -69,7 +69,7 @@ const displayedGroup = computed<string>(() => {
 	if(tree.value[props.modelValue.course] != undefined)
 		return 'Руководитель направления';
 
-	return 'Студ.совета';
+	return 'Студ_ИУ';
 });
 
 const tree = computed(()=>Structure2Selector(props.structure));

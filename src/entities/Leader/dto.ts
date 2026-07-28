@@ -2,8 +2,8 @@ import type { StructureTreeNodeInterface } from "../StructureTree/type";
 import type { MembershipType } from "../UserProfile/type";
 import type { Appointment, AppointmentAPI, LeaderAPI } from "./type";
 
-export function LeaderAPI2Appointment(data: LeaderAPI): Appointment{
-	if(data.department == null && data.direction == null)
+export function LeaderAPI2Appointment(data: LeaderAPI): Appointment {
+	if (data.department == null && data.direction == null)
 		return {
 			id: data.id,
 			title: data.position,
@@ -12,7 +12,7 @@ export function LeaderAPI2Appointment(data: LeaderAPI): Appointment{
 			groupId: null,
 			memberId: data.member.id
 		}
-	return data.direction == null 
+	return data.direction == null
 		? {
 			id: data.id,
 			subtitle: `${data.member.last_name} ${data.member.first_name} ${data.member.patronymic ?? ''}`,
@@ -31,18 +31,18 @@ export function LeaderAPI2Appointment(data: LeaderAPI): Appointment{
 
 export function LeaderAPI2Membership(
 	leader: LeaderAPI,
-): MembershipType{
-	if(leader.department == null && leader.direction == null)
+): MembershipType {
+	if (leader.department == null && leader.direction == null)
 		return {
 			id: leader.id,
 			isHead: true,
 			position: leader.position,
 			course: leader.position,
 			courseId: -1,
-			group: 'Студ.совета',
+			group: 'Студ_ИУ',
 			groupId: -1
 		}
-	return leader.direction == null 
+	return leader.direction == null
 		? {
 			id: leader.id,
 			isHead: true,
@@ -61,8 +61,8 @@ export function LeaderAPI2Membership(
 		}
 }
 
-export function Membership2AppointmentAPI(member:MembershipType, userId: number): AppointmentAPI {
-	if(member.courseId == -1 && member.groupId == -1)
+export function Membership2AppointmentAPI(member: MembershipType, userId: number): AppointmentAPI {
+	if (member.courseId == -1 && member.groupId == -1)
 		return {
 			"member_id": userId,
 			"position": member.position ?? 'Руководитель',

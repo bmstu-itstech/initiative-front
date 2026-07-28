@@ -62,8 +62,8 @@ const {
 
 const fullName = computed<string>(() => {
 	const name = [
-		draft.value.fields.firstName,
 		draft.value.fields.secondName,
+		draft.value.fields.firstName,
 		draft.value.fields.surName
 	]
 		.map((part) => part.trim())

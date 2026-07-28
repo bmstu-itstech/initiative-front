@@ -23,7 +23,7 @@ const emit = defineEmits<{
 <template>
 	<TreeNode 
 		v-for="node in props.data"
-		:key="node.id"
+		:key="`${node.type}-${node.id}`"
 		:node="node"
 		@clicked="(ids: number[])=>emit('clicked', ids)"
 	/>

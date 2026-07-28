@@ -10,34 +10,34 @@ const mapper: Record<string, DropDownMenuType[]> = {
 	'3': ['user', 'group', 'course', 'endpoint']
 }
 
-function getData(id: string, node: StructureTreeNodeInterface): string|null{
+function getData(id: string, node: StructureTreeNodeInterface): string | null {
 	return mapper[id]?.includes(node.type) ? [node.type, node.title, node.subtitle].join(' ') : null;
 }
 
-function compare(data: string|null, target: string[]): boolean{
-	if(data == null)
+function compare(data: string | null, target: string[]): boolean {
+	if (data == null)
 		return false;
 	const normalizedData = data.toLowerCase();
-	return target.every((t)=>normalizedData.includes(t));
+	return target.every((t) => normalizedData.includes(t));
 }
 
 function dfs(
-	search: FilterDataInterface, 
-	target: string[], 
+	search: FilterDataInterface,
+	target: string[],
 	node: StructureTreeNodeInterface
 ): StructureTreeNodeInterface | null {
 
 	const data = getData(String(search.buttonID), node);
 	const match = compare(data, target);
-	
-	const filteredChildren:  StructureTreeNodeInterface[]= [];
-	node.children?.forEach((child)=>{
+
+	const filteredChildren: StructureTreeNodeInterface[] = [];
+	node.children?.forEach((child) => {
 		const buffer = dfs(search, target, child);
-		if(buffer !== null)
+		if (buffer !== null)
 			filteredChildren.push(buffer);
 	});
 
-	if(match || filteredChildren.length>0)
+	if (match || filteredChildren.length > 0)
 		return {
 			...node,
 			children: filteredChildren
@@ -48,21 +48,22 @@ function dfs(
 
 
 export function filterTree(
-	search: FilterDataInterface, 
-	data:  StructureTreeNodeInterface[]):  StructureTreeNodeInterface[] {
-		const normalizedSearch = search.value.trim();
-		if (!normalizedSearch)
-			return data;
-		
-		const target = normalizedSearch
-			.toLowerCase()
-			.split(/\s+/);
+	search: FilterDataInterface,
+	data: StructureTreeNodeInterface[]
+): StructureTreeNodeInterface[] {
+	const normalizedSearch = search.value.trim();
+	const sortedTree = data.sort((node1, node2) => Number(node2.type == 'endpoint') - Number(node1.type == 'endpoint'));
+	if (!normalizedSearch)
+		return sortedTree;
 
-		const ans: StructureTreeNodeInterface[] = [];
-		for(let node of data){
-			const filteredNode = dfs(search, target, node);
-			if(filteredNode != null)
-				ans.push(filteredNode);
-		}
-		return ans;
+	const target = normalizedSearch
+		.toLowerCase()
+		.split(/\s+/);
+	const ans: StructureTreeNodeInterface[] = [];
+	for (let node of sortedTree) {
+		const filteredNode = dfs(search, target, node);
+		if (filteredNode != null)
+			ans.push(filteredNode);
+	}
+	return ans;
 }
