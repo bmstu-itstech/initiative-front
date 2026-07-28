@@ -4,12 +4,12 @@ export const routes: RouteRecordRaw[] = [
 	{
 		path: '/test',
 		name: 'test',
-		component: ()=>import('@/pages/TestPage.vue')
+		component: () => import('@/pages/TestPage.vue')
 	},
 	{
 		path: '/',
 		name: 'home',
-		component: ()=>import('@/app/layout/AppLayout.vue'),
+		component: () => import('@/app/layout/AppLayout.vue'),
 
 		meta: {
 			requiresAuth: true
@@ -19,17 +19,17 @@ export const routes: RouteRecordRaw[] = [
 			{
 				path: 'structure',
 				name: 'structure',
-				component: ()=>import('@/pages/StructurePage.vue')
+				component: () => import('@/pages/StructurePage.vue')
 			},
 			{
 				path: 'people',
 				name: 'people',
-				component: ()=>import('@/pages/PeoplePage.vue')
+				component: () => import('@/pages/PeoplePage.vue')
 			},
 			{
 				path: 'users/:id',
 				name: 'user',
-				component: ()=>import('@/pages/UserPage.vue'),
+				component: () => import('@/pages/UserPage.vue'),
 
 				props: (route) => (
 					{
@@ -39,12 +39,17 @@ export const routes: RouteRecordRaw[] = [
 					}
 				)
 			},
+			{
+				path: 'events',
+				name: 'events',
+				component: () => import('@/pages/EventsPage.vue')
+			},
 		]
 	},
 	{
 		path: '/login',
 		name: 'login',
-		component: ()=>import('@/pages/SignInPage.vue')
+		component: () => import('@/pages/SignInPage.vue')
 	},
 	{
 		path: '/:pathMatch(.*)*',

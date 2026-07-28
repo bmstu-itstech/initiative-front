@@ -39,3 +39,11 @@ export function getObjectSize(data: TableData): ObjectSizeResult {
 		normData
 	};
 }
+
+export function parseDoubleDate(date: string): number {
+	const firstDate: string = date.split(' - ')[0] ?? date;
+	const [day, month, year] = firstDate.split('.').map(Number);
+	if (year == undefined || month == undefined)
+		return 0;
+	return new Date(year, month - 1, day).getTime();
+}

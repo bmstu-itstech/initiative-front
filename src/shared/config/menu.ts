@@ -2,6 +2,7 @@ import DoorIcon from '../assets/icons/menu/Door.svg?url';
 import SunIcon from '../assets/icons/menu/Sun.svg?url';
 import PeopleIcon from '../assets/icons/menu/People.svg?url';
 import StructureIcon from '../assets/icons/menu/Structure.svg?url';
+import EventsIcon from '../assets/icons/menu/Calendar.svg?url';
 
 import type { MenuButtonPositionType } from '../types/types';
 
@@ -40,6 +41,17 @@ export const MENU_CONFIG: MenuButtonType[] = [
 		icon: PeopleIcon,
 		text: 'Активисты',
 		link: 'people'
+	},
+	{
+		id: 4,
+
+		isActive: false,
+		elongated: false,
+		position: 'top',
+
+		icon: EventsIcon,
+		text: 'Мероприятия',
+		link: 'events'
 	},
 	{
 		id: 2,

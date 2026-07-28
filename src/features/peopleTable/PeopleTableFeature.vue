@@ -4,7 +4,7 @@ import Table from '@/widgets/Table.vue';
 import { usePeopleTable } from './usePeopleTable';
 import { ref, computed, onMounted } from 'vue';
 import { filterColumn, filterTable } from '../filterTable/filterTable';
-import type { PeopleTableRow } from '@/entities/UsersTable/type';
+import { PeopleTableMapper, type PeopleTableData, type PeopleTableRow } from '@/entities/UsersTable/type';
 import type { SortDirectionType } from '@/shared/types/types';
 import { showAlert } from '../alert/alert';
 import NotFound from '@/shared/ui/NotFound.vue';
@@ -28,11 +28,11 @@ const {
 const sortColumn = ref<keyof PeopleTableRow | null>(null);
 const direction = ref<SortDirectionType>('desc');
 
-const filteredData = computed(()=>{
-	const buffer = filterTable(props.filter, data.value);
+const filteredData = computed<PeopleTableData>(()=>{
+	const buffer = filterTable(props.filter, data.value, PeopleTableMapper) as PeopleTableData;
 	if(sortColumn.value == null)
 		return buffer;
-	return filterColumn(sortColumn.value, buffer, direction.value) 
+	return filterColumn(sortColumn.value, buffer, direction.value, PeopleTableMapper) as PeopleTableData; 
 });
 
 function handleSort(columnName: keyof PeopleTableRow){
@@ -72,7 +72,7 @@ function handleLink(id: number): void{
 	<Table 
 		v-else-if="filteredData.length != 0"
 		:rawData="filteredData"
-		@sort="handleSort"
+		@sort="(columnName)=>handleSort(columnName as keyof PeopleTableRow)"
 		@clicked="handleLink"
 	/>
 	<NotFound 

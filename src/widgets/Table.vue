@@ -3,7 +3,6 @@ import { computed } from 'vue';
 
 import { PEOPLE_TABLE_MOCK } from '@/entities/UsersTable/mock';
 
-import type { PeopleTableData, PeopleTableRow } from '@/entities/UsersTable/type';
 import { TABLE_BUTTONS_CONFIG, TABLE_POSITION_CONFIG, TABLE_PROPOPTIONS_CONFIG } from '@/shared/config/table';
 import type { ObjectSizeResult } from '@/shared/lib/table';
 
@@ -11,11 +10,12 @@ import { getObjectSize } from '@/shared/lib/table';
 import type { TableCellPositionType } from '@/shared/types/types';
 
 import TableCell from '@/shared/ui/TableCell.vue';
+import type { TableRowType, TableType } from '@/features/filterTable/type';
 
 
 const props = withDefaults(
 	defineProps<{
-		rawData?: PeopleTableData,
+		rawData?: TableType,
 		proporions?: string,
 		positions?: TableCellPositionType[],
 		isButtons?: boolean[]
@@ -29,7 +29,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
 	'clicked': [id: number];
-	'sort': [columnName: keyof PeopleTableRow];
+	'sort': [columnName: keyof TableRowType];
 }>();
 
 const data = computed<ObjectSizeResult>(()=>getObjectSize(props.rawData));
@@ -48,7 +48,7 @@ const style: string = "grid-template-columns: " + props.proporions + ";";
 				position="center"
 				:isHeader="true"
 				:isButton="true"
-				@clicked="emit('sort', cell as keyof PeopleTableRow)"
+				@clicked="emit('sort', cell as keyof TableRowType)"
 			/>
 		</div>
 		<div class="table__content">
