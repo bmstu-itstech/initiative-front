@@ -64,6 +64,7 @@ export function userProfile2updateUserAPI(user: UserProfileInterface): updateUse
 		"patronymic": user.surName == '-' ? null : user.surName,
 		"group": user.group == '-' ? null : user.group,
 		"birth_date": user.birthday == '-' ? null : user.birthday,
+		"join_date": user.entryday == '-' ? null : user.entryday,
 		"department_ids": user.membership.map((member)=>member.groupId)
 	}
 }
@@ -76,6 +77,7 @@ export function userProfileSource2updateUserAPI(user: UserProfileSourceInterface
 		"patronymic": user.surName == '-' ? null : user.surName,
 		"group": user.group == '-' ? null : user.group,
 		"birth_date": user.birthday == '-' ? null : user.birthday,
+		"join_date": user.entryday == '-' ? null : user.entryday,
 		"department_ids": user.membership.map((member)=>member.groupId)
 	}
 }

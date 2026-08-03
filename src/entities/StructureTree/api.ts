@@ -1,10 +1,27 @@
+import { api } from "@/shared/api/request";
 import { getCoursesAPI } from "../Course/api";
 import { getGroupsAPI } from "../Group/api";
 import { getLeadersAPI } from "../Leader/api";
 import { getUsersFromGroupAPI } from "../User/api";
 import { userAPI2userTree } from "../User/dto";
-import { makeTree } from "./dto";
-import type { StructureTreeNodeInterface } from "./type";
+import { makeStructureTree, makeTree } from "./dto";
+import type { getStructureResponse, StructureTreeNodeInterface } from "./type";
+
+
+async function getStructureAPI():
+Promise<getStructureResponse>{
+	return await api.get('/api/members/structure/') as getStructureResponse;
+}
+
+export async function getStructureTree():
+Promise<StructureTreeNodeInterface[]> {
+	const [structure, leaders] = await Promise.all([
+		getStructureAPI(),
+		getLeadersAPI()
+	]);
+
+	return makeStructureTree(leaders, structure);
+}
 
 export async function getStructureTreeAPI():
 Promise<StructureTreeNodeInterface[]> {

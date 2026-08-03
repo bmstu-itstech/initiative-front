@@ -77,6 +77,7 @@ export function draft2updateUserRequest(draft: UserEditorDraft): updateUserReque
 		"patronymic": draft.fields.surName,
 		"group": draft.fields.group,
 		"birth_date": draft.fields.birthday,
+		"join_date": draft.fields.entryday,
 		"department_ids": mapMemberships(draft)
 	};
 }
@@ -89,6 +90,7 @@ export function draft2createUserRequest(draft: UserEditorDraft): createUserReque
 		"patronymic": draft.fields.surName,
 		"group": draft.fields.group,
 		"birth_date": draft.fields.birthday,
+		"join_date": draft.fields.entryday,
 		"department_ids": mapMemberships(draft)
 	};
 }

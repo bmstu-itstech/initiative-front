@@ -7,12 +7,32 @@ import { ref } from 'vue';
 import type { InputType, SortDirectionType } from '@/shared/types/types';
 import PeopleTableFeature from '@/features/peopleTable/PeopleTableFeature.vue';
 import { useRouter } from 'vue-router';
+import type { AlertOptions } from '@/features/alert/type';
+import { downloadUsersTableCSV } from '@/entities/UsersTable/api';
+import { showAlert } from '@/features/alert/alert';
 
 
 const filterValue = ref<string>('');
 const filterState = ref<InputType>('default');
 
 const router = useRouter();
+
+const isDownloading = ref<boolean>(false);
+
+async function handleDownload(): Promise<void>{
+	isDownloading.value = true;
+	try{
+		await downloadUsersTableCSV();
+	}catch(currentError){
+		showAlert({
+			state: 'danger',
+			header: 'Ошибка скачивания',
+			description: 'Проверьте подключение к интернету'
+		}, true);
+	}finally{
+		isDownloading.value = false;
+	}
+}
 
 </script>
 
@@ -31,9 +51,10 @@ const router = useRouter();
 		<div class="people-page__content__action">
 			<Button 
 				class="people-page__content__action__button"
-				text="Скачать CSV"
+				:text="isDownloading ? 'Скачивание...' : 'Скачать CSV'"
 				:icon="false"
 				:state="'primary'"
+				@clicked="handleDownload"
 			/>
 			<Button 
 				class="people-page__content__action__add-button"

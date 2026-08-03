@@ -1,6 +1,8 @@
 import { ERROR_ALERT, type ErrorAlertMap } from "@/features/alert/config";
 import type { departamentAPI } from "../Group/type"
 
+export type briefUserAPI = Omit<UserAPI, 'departments'>;
+
 export type UserAPI = {
 	"id": number,
 	"first_name": string,
@@ -20,6 +22,7 @@ export interface updateUserRequest {
 	"patronymic": string|null,
 	"group": string|null,
 	"birth_date": string|null,
+	"join_date": string|null,
 	"department_ids": number[]
 }
 export interface updateUserResponse extends UserAPI {}

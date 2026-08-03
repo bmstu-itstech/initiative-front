@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import type { AlertOptions } from '../alert/type';
 import type { StructureTreeNodeInterface } from '@/entities/StructureTree/type';
-import { getStructureTreeAPI } from '@/entities/StructureTree/api';
+import { getStructureTree, getStructureTreeAPI } from '@/entities/StructureTree/api';
 import { ERROR_ALERT, UNKNOWN_ERROR } from '../alert/config';
 
 export function useStructureTree(){
@@ -17,7 +17,7 @@ export function useStructureTree(){
 		errorAlert.value = null;
 
 		try{
-			data.value = await getStructureTreeAPI();
+			data.value = await getStructureTree();
 		}catch(currentError){
 			errorAlert.value = ERROR_ALERT['network'] ?? UNKNOWN_ERROR;
 		}finally{

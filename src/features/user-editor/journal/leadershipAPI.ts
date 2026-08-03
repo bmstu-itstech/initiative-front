@@ -16,7 +16,7 @@ function leadershipDraft2leadershipAPI(
 		"member_id": userId,
 		"position": position,
 		"department_id": leader.groupId,
-		"direction_id": leader.courseId
+		"direction_id": leader.groupId ? null : leader.courseId
 	};
 }
 
